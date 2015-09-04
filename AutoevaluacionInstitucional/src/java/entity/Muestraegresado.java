@@ -5,15 +5,25 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "muestraegresado")
+@Table(name = "muestraegresado", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Muestraegresado.findAll", query = "SELECT m FROM Muestraegresado m"),
@@ -31,12 +41,12 @@ public class Muestraegresado implements Serializable {
     private String conglomerado;
     @Column(name = "metodo")
     private String metodo;
-    @JoinColumn(name = "egresado_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Egresado egresadoId;
     @JoinColumn(name = "muestra_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Muestra muestraId;
+    @JoinColumn(name = "egresado_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Egresado egresadoId;
 
     public Muestraegresado() {
     }
@@ -69,20 +79,20 @@ public class Muestraegresado implements Serializable {
         this.metodo = metodo;
     }
 
-    public Egresado getEgresadoId() {
-        return egresadoId;
-    }
-
-    public void setEgresadoId(Egresado egresadoId) {
-        this.egresadoId = egresadoId;
-    }
-
     public Muestra getMuestraId() {
         return muestraId;
     }
 
     public void setMuestraId(Muestra muestraId) {
         this.muestraId = muestraId;
+    }
+
+    public Egresado getEgresadoId() {
+        return egresadoId;
+    }
+
+    public void setEgresadoId(Egresado egresadoId) {
+        this.egresadoId = egresadoId;
     }
 
     @Override

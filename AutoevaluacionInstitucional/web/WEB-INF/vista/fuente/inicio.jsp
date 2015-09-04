@@ -48,9 +48,6 @@
                 </div>
                 <div class="span2"></div>
             </div>
-            <h1 style="margin: 76px 0 27px;
-                text-align: center;">Acreditación Institucional. "No la esperamos, ¡todos la trabajamos!"</h1>
-            <p class="marketing-byline">Germán Sierra Anaya. Rector Universidad de Cartagena</p>
             <div  style="bottom: 25px" align="center" class="row-fluid">
                 <hr class="soften"></hr>
                 <%--    <img src="<%=request.getContextPath()%>/css/Captura.png" style="width: 224px; height: 80px"></img>--%>

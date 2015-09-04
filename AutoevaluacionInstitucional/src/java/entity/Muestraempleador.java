@@ -5,15 +5,25 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "muestraempleador")
+@Table(name = "muestraempleador", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Muestraempleador.findAll", query = "SELECT m FROM Muestraempleador m"),
@@ -31,12 +41,12 @@ public class Muestraempleador implements Serializable {
     private String conglomerado;
     @Column(name = "metodo")
     private String metodo;
-    @JoinColumn(name = "empleador_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Empleador empleadorId;
     @JoinColumn(name = "muestra_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Muestra muestraId;
+    @JoinColumn(name = "empleador_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Empleador empleadorId;
 
     public Muestraempleador() {
     }
@@ -69,20 +79,20 @@ public class Muestraempleador implements Serializable {
         this.metodo = metodo;
     }
 
-    public Empleador getEmpleadorId() {
-        return empleadorId;
-    }
-
-    public void setEmpleadorId(Empleador empleadorId) {
-        this.empleadorId = empleadorId;
-    }
-
     public Muestra getMuestraId() {
         return muestraId;
     }
 
     public void setMuestraId(Muestra muestraId) {
         this.muestraId = muestraId;
+    }
+
+    public Empleador getEmpleadorId() {
+        return empleadorId;
+    }
+
+    public void setEmpleadorId(Empleador empleadorId) {
+        this.empleadorId = empleadorId;
     }
 
     @Override

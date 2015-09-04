@@ -5,14 +5,23 @@
 package entity.controller;
 
 import connection.jpaConnection;
-import entity.*;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import entity.Sede;
+import entity.Facultad;
+import entity.Administrativo;
 import java.util.ArrayList;
 import java.util.List;
+import entity.Estudiante;
+import entity.Directorprograma;
+import entity.Egresado;
+import entity.Representante;
+import entity.Proceso;
+import entity.Docente;
+import entity.Programa;
 import entity.controller.exceptions.IllegalOrphanException;
 import entity.controller.exceptions.NonexistentEntityException;
 import javax.persistence.EntityManager;
@@ -20,7 +29,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 public class ProgramaJpaController implements Serializable {
 

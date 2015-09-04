@@ -4,12 +4,16 @@
  */
 package entity.controller;
 
-import entity.*;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import entity.Persona;
+import entity.Muestra;
+import entity.Fuente;
+import entity.Descripcioncriterio;
+import entity.Muestracriterio;
 import entity.controller.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -17,7 +21,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 public class MuestracriterioJpaController implements Serializable {
 
@@ -40,37 +44,37 @@ public class MuestracriterioJpaController implements Serializable {
                 personaId = em.getReference(personaId.getClass(), personaId.getId());
                 muestracriterio.setPersonaId(personaId);
             }
-            Descripcioncriterio descripcioncriterioId = muestracriterio.getDescripcioncriterioId();
-            if (descripcioncriterioId != null) {
-                descripcioncriterioId = em.getReference(descripcioncriterioId.getClass(), descripcioncriterioId.getId());
-                muestracriterio.setDescripcioncriterioId(descripcioncriterioId);
+            Muestra muestraId = muestracriterio.getMuestraId();
+            if (muestraId != null) {
+                muestraId = em.getReference(muestraId.getClass(), muestraId.getId());
+                muestracriterio.setMuestraId(muestraId);
             }
             Fuente fuenteId = muestracriterio.getFuenteId();
             if (fuenteId != null) {
                 fuenteId = em.getReference(fuenteId.getClass(), fuenteId.getId());
                 muestracriterio.setFuenteId(fuenteId);
             }
-            Muestra muestraId = muestracriterio.getMuestraId();
-            if (muestraId != null) {
-                muestraId = em.getReference(muestraId.getClass(), muestraId.getId());
-                muestracriterio.setMuestraId(muestraId);
+            Descripcioncriterio descripcioncriterioId = muestracriterio.getDescripcioncriterioId();
+            if (descripcioncriterioId != null) {
+                descripcioncriterioId = em.getReference(descripcioncriterioId.getClass(), descripcioncriterioId.getId());
+                muestracriterio.setDescripcioncriterioId(descripcioncriterioId);
             }
             em.persist(muestracriterio);
             if (personaId != null) {
                 personaId.getMuestracriterioList().add(muestracriterio);
                 personaId = em.merge(personaId);
             }
-            if (descripcioncriterioId != null) {
-                descripcioncriterioId.getMuestracriterioList().add(muestracriterio);
-                descripcioncriterioId = em.merge(descripcioncriterioId);
+            if (muestraId != null) {
+                muestraId.getMuestracriterioList().add(muestracriterio);
+                muestraId = em.merge(muestraId);
             }
             if (fuenteId != null) {
                 fuenteId.getMuestracriterioList().add(muestracriterio);
                 fuenteId = em.merge(fuenteId);
             }
-            if (muestraId != null) {
-                muestraId.getMuestracriterioList().add(muestracriterio);
-                muestraId = em.merge(muestraId);
+            if (descripcioncriterioId != null) {
+                descripcioncriterioId.getMuestracriterioList().add(muestracriterio);
+                descripcioncriterioId = em.merge(descripcioncriterioId);
             }
             em.getTransaction().commit();
         } finally {
@@ -88,27 +92,27 @@ public class MuestracriterioJpaController implements Serializable {
             Muestracriterio persistentMuestracriterio = em.find(Muestracriterio.class, muestracriterio.getId());
             Persona personaIdOld = persistentMuestracriterio.getPersonaId();
             Persona personaIdNew = muestracriterio.getPersonaId();
-            Descripcioncriterio descripcioncriterioIdOld = persistentMuestracriterio.getDescripcioncriterioId();
-            Descripcioncriterio descripcioncriterioIdNew = muestracriterio.getDescripcioncriterioId();
-            Fuente fuenteIdOld = persistentMuestracriterio.getFuenteId();
-            Fuente fuenteIdNew = muestracriterio.getFuenteId();
             Muestra muestraIdOld = persistentMuestracriterio.getMuestraId();
             Muestra muestraIdNew = muestracriterio.getMuestraId();
+            Fuente fuenteIdOld = persistentMuestracriterio.getFuenteId();
+            Fuente fuenteIdNew = muestracriterio.getFuenteId();
+            Descripcioncriterio descripcioncriterioIdOld = persistentMuestracriterio.getDescripcioncriterioId();
+            Descripcioncriterio descripcioncriterioIdNew = muestracriterio.getDescripcioncriterioId();
             if (personaIdNew != null) {
                 personaIdNew = em.getReference(personaIdNew.getClass(), personaIdNew.getId());
                 muestracriterio.setPersonaId(personaIdNew);
             }
-            if (descripcioncriterioIdNew != null) {
-                descripcioncriterioIdNew = em.getReference(descripcioncriterioIdNew.getClass(), descripcioncriterioIdNew.getId());
-                muestracriterio.setDescripcioncriterioId(descripcioncriterioIdNew);
+            if (muestraIdNew != null) {
+                muestraIdNew = em.getReference(muestraIdNew.getClass(), muestraIdNew.getId());
+                muestracriterio.setMuestraId(muestraIdNew);
             }
             if (fuenteIdNew != null) {
                 fuenteIdNew = em.getReference(fuenteIdNew.getClass(), fuenteIdNew.getId());
                 muestracriterio.setFuenteId(fuenteIdNew);
             }
-            if (muestraIdNew != null) {
-                muestraIdNew = em.getReference(muestraIdNew.getClass(), muestraIdNew.getId());
-                muestracriterio.setMuestraId(muestraIdNew);
+            if (descripcioncriterioIdNew != null) {
+                descripcioncriterioIdNew = em.getReference(descripcioncriterioIdNew.getClass(), descripcioncriterioIdNew.getId());
+                muestracriterio.setDescripcioncriterioId(descripcioncriterioIdNew);
             }
             muestracriterio = em.merge(muestracriterio);
             if (personaIdOld != null && !personaIdOld.equals(personaIdNew)) {
@@ -119,13 +123,13 @@ public class MuestracriterioJpaController implements Serializable {
                 personaIdNew.getMuestracriterioList().add(muestracriterio);
                 personaIdNew = em.merge(personaIdNew);
             }
-            if (descripcioncriterioIdOld != null && !descripcioncriterioIdOld.equals(descripcioncriterioIdNew)) {
-                descripcioncriterioIdOld.getMuestracriterioList().remove(muestracriterio);
-                descripcioncriterioIdOld = em.merge(descripcioncriterioIdOld);
+            if (muestraIdOld != null && !muestraIdOld.equals(muestraIdNew)) {
+                muestraIdOld.getMuestracriterioList().remove(muestracriterio);
+                muestraIdOld = em.merge(muestraIdOld);
             }
-            if (descripcioncriterioIdNew != null && !descripcioncriterioIdNew.equals(descripcioncriterioIdOld)) {
-                descripcioncriterioIdNew.getMuestracriterioList().add(muestracriterio);
-                descripcioncriterioIdNew = em.merge(descripcioncriterioIdNew);
+            if (muestraIdNew != null && !muestraIdNew.equals(muestraIdOld)) {
+                muestraIdNew.getMuestracriterioList().add(muestracriterio);
+                muestraIdNew = em.merge(muestraIdNew);
             }
             if (fuenteIdOld != null && !fuenteIdOld.equals(fuenteIdNew)) {
                 fuenteIdOld.getMuestracriterioList().remove(muestracriterio);
@@ -135,13 +139,13 @@ public class MuestracriterioJpaController implements Serializable {
                 fuenteIdNew.getMuestracriterioList().add(muestracriterio);
                 fuenteIdNew = em.merge(fuenteIdNew);
             }
-            if (muestraIdOld != null && !muestraIdOld.equals(muestraIdNew)) {
-                muestraIdOld.getMuestracriterioList().remove(muestracriterio);
-                muestraIdOld = em.merge(muestraIdOld);
+            if (descripcioncriterioIdOld != null && !descripcioncriterioIdOld.equals(descripcioncriterioIdNew)) {
+                descripcioncriterioIdOld.getMuestracriterioList().remove(muestracriterio);
+                descripcioncriterioIdOld = em.merge(descripcioncriterioIdOld);
             }
-            if (muestraIdNew != null && !muestraIdNew.equals(muestraIdOld)) {
-                muestraIdNew.getMuestracriterioList().add(muestracriterio);
-                muestraIdNew = em.merge(muestraIdNew);
+            if (descripcioncriterioIdNew != null && !descripcioncriterioIdNew.equals(descripcioncriterioIdOld)) {
+                descripcioncriterioIdNew.getMuestracriterioList().add(muestracriterio);
+                descripcioncriterioIdNew = em.merge(descripcioncriterioIdNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -177,20 +181,20 @@ public class MuestracriterioJpaController implements Serializable {
                 personaId.getMuestracriterioList().remove(muestracriterio);
                 personaId = em.merge(personaId);
             }
-            Descripcioncriterio descripcioncriterioId = muestracriterio.getDescripcioncriterioId();
-            if (descripcioncriterioId != null) {
-                descripcioncriterioId.getMuestracriterioList().remove(muestracriterio);
-                descripcioncriterioId = em.merge(descripcioncriterioId);
+            Muestra muestraId = muestracriterio.getMuestraId();
+            if (muestraId != null) {
+                muestraId.getMuestracriterioList().remove(muestracriterio);
+                muestraId = em.merge(muestraId);
             }
             Fuente fuenteId = muestracriterio.getFuenteId();
             if (fuenteId != null) {
                 fuenteId.getMuestracriterioList().remove(muestracriterio);
                 fuenteId = em.merge(fuenteId);
             }
-            Muestra muestraId = muestracriterio.getMuestraId();
-            if (muestraId != null) {
-                muestraId.getMuestracriterioList().remove(muestracriterio);
-                muestraId = em.merge(muestraId);
+            Descripcioncriterio descripcioncriterioId = muestracriterio.getDescripcioncriterioId();
+            if (descripcioncriterioId != null) {
+                descripcioncriterioId.getMuestracriterioList().remove(muestracriterio);
+                descripcioncriterioId = em.merge(descripcioncriterioId);
             }
             em.remove(muestracriterio);
             em.getTransaction().commit();

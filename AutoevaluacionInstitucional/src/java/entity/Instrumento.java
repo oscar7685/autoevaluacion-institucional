@@ -12,10 +12,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "instrumento")
+@Table(name = "instrumento", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Instrumento.findAll", query = "SELECT i FROM Instrumento i"),

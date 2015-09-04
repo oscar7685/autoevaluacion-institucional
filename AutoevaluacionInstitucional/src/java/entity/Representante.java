@@ -6,16 +6,28 @@ package entity;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "representante")
+@Table(name = "representante", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Representante.findAll", query = "SELECT r FROM Representante r"),
@@ -33,12 +45,12 @@ public class Representante implements Serializable {
     private String rol;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "representanteId")
     private List<Representantehasprivilegio> representantehasprivilegioList;
-    @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Persona personaId;
     @JoinColumn(name = "programa_id", referencedColumnName = "id")
     @ManyToOne
     private Programa programaId;
+    @JoinColumn(name = "persona_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Persona personaId;
 
     public Representante() {
     }
@@ -77,20 +89,20 @@ public class Representante implements Serializable {
         this.representantehasprivilegioList = representantehasprivilegioList;
     }
 
-    public Persona getPersonaId() {
-        return personaId;
-    }
-
-    public void setPersonaId(Persona personaId) {
-        this.personaId = personaId;
-    }
-
     public Programa getProgramaId() {
         return programaId;
     }
 
     public void setProgramaId(Programa programaId) {
         this.programaId = programaId;
+    }
+
+    public Persona getPersonaId() {
+        return personaId;
+    }
+
+    public void setPersonaId(Persona personaId) {
+        this.personaId = personaId;
     }
 
     @Override

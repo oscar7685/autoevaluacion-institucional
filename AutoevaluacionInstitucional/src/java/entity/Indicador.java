@@ -12,10 +12,10 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "indicador")
+@Table(name = "indicador", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Indicador.findAll", query = "SELECT i FROM Indicador i"),
@@ -84,7 +84,7 @@ public class Indicador implements Serializable {
     public List<Instrumento> getInstrumentoList() {
         return instrumentoList;
     }
-
+    
     public void setInstrumentoList(List<Instrumento> instrumentoList) {
         this.instrumentoList = instrumentoList;
     }

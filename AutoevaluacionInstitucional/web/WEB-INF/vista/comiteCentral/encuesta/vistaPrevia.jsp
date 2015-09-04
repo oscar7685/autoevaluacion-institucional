@@ -1,14 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <script type="text/javascript">
-    $(function(){
-        var inst =$("#ins").val();  
-        inst = inst.replace(/\n/gi,"<br/>");
-        
+    $(function() {
+        var inst = $("#ins").val();
+        inst = inst.replace(/\n/gi, "<br/>");
+
         $("#insp").append(inst);
     });
-    
-    
+
+
 </script>
 <style type="text/css">
     @media all {
@@ -50,95 +50,67 @@
             </div>
 
             <c:forEach items="${encuesta.getPreguntaList()}" var="pregunta" varStatus="status">
-                <c:choose>
-                    <c:when test="${status.count%2==1}">
-                        <div class="row printDiv">
-                            <c:choose>
-                                <c:when test="${pregunta.getTipo() != 'Elegir 1-5'}">
-                                    <div class="span5">
-                                        <p>${status.count} ${pregunta.getPregunta()}</p>
-                                        <label class="radio"><input type="radio">Si</label>
-                                        <label class="radio"><input type="radio">No</label>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="span5">
-                                        <p>${status.count} ${pregunta.getPregunta()}</p>
-                                        <label class="radio"><input type="radio">5 Completamente deacuerdo</label>
-                                        <label class="radio"><input type="radio">4 De acuerdo</label>
-                                        <label class="radio"><input type="radio">3 Parcialmente de acuerdo</label>
-                                        <label class="radio"><input type="radio">2 En desacuerdo</label>
-                                        <label class="radio"><input type="radio">1 Completamente en desacuerdo</label>
-                                        <label class="radio"><input type="radio">0 No sabe</label>
-                                    </div>
-                                </c:otherwise>    
-                            </c:choose>
+                <div class="row">
+                    <c:choose>
+                        <c:when test="${pregunta.getTipo() == 'Elegir 1-5'}">
+                            <div class="span10">
+                                <p>${status.count} ${pregunta.getPregunta()}</p>
+                                <label class="radio"><input type="radio">5 Completamente deacuerdo</label>
+                                <label class="radio"><input type="radio">4 De acuerdo</label>
+                                <label class="radio"><input type="radio">3 Parcialmente de acuerdo</label>
+                                <label class="radio"><input type="radio">2 En desacuerdo</label>
+                                <label class="radio"><input type="radio">1 Completamente en desacuerdo</label>
+                                <label class="radio"><input type="radio">0 No sabe</label>
+                            </div>
+                        </c:when>
+                        <c:when test="${pregunta.getTipo() == 'Matriz'}">
+                            <div class="span10">
+                                <p>${status.count} ${pregunta.getPregunta()}</p>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="span4"></th>
+                                            <th class="span2" style="font-size: 12px">5</th>
+                                            <th class="span2" style="font-size: 12px">4</th>
+                                            <th class="span2" style="font-size: 12px">3</th>
+                                            <th class="span2" style="font-size: 12px">2 </th>
+                                            <th class="span2" style="font-size: 12px">1</th>
+                                            <th class="span2" style="font-size: 12px">0</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${pregunta.getPreguntaList()}" var="sub" varStatus="subStatus">
+                                            <tr>
+                                                <td>${sub.getCodigo()} ${sub.getPregunta()}</td>
+                                                <td><label class="radio"><input type="radio" name="pregunta${sub.id}" value="5" /></label></td>
+                                                <td><label class="radio"><input type="radio" name="pregunta${sub.id}" value="4" /></label></td>
+                                                <td><label class="radio"><input type="radio" name="pregunta${sub.id}" value="3" /></label></td>
+                                                <td><label class="radio"><input type="radio" name="pregunta${sub.id}" value="2" /></label></td>
+                                                <td><label class="radio"><input type="radio" name="pregunta${sub.id}" value="1" /></label></td>
+                                                <td><label class="radio"><input type="radio" name="pregunta${sub.id}" value="0" /></label></td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
                         </c:when>
 
-                        <c:otherwise>
-
-                            <c:choose>
-                                <c:when test="${pregunta.getTipo() != 'Elegir 1-5'}">
-                                    <div class="span5">
-                                        <p>${status.count} ${pregunta.getPregunta()}</p>
-                                        <label class="radio"><input type="radio">Si</label>
-                                        <label class="radio"><input type="radio">No</label>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="span5">
-                                        <p>${status.count} ${pregunta.getPregunta()}</p>
-                                        <label class="radio"><input type="radio">5 Completamente deacuerdo</label>
-                                        <label class="radio"><input type="radio">4 De acuerdo</label>
-                                        <label class="radio"><input type="radio">3 Parcialmente de acuerdo</label>
-                                        <label class="radio"><input type="radio">2 En desacuerdo</label>
-                                        <label class="radio"><input type="radio">1 Completamente en desacuerdo</label>
-                                        <label class="radio"><input type="radio">0 No sabe</label>
-                                    </div>
-                                </c:otherwise>    
-                            </c:choose>
-                        </div><!--jaja-->
-                    </c:otherwise>
-                </c:choose>
+                    </c:choose>
+                </div>
             </c:forEach>  
-
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    $(function(){
-        setTimeout(function(){
-            var altura=0; 
-            var primer=true;
-            $("#conte .row").each(function(ind,el){
-                altura+=$(el).height();
-                if(primer){
-                    if(altura > 800){
-                        $("<div class='saltopagina'></div>").insertBefore($(el));
-                        altura=$(el).height();
-                        primer=false;
-                    }
-                    
-                }else{
-                    if(altura > 910){
-                        $("<div class='saltopagina'></div>").insertBefore($(el));
-                        altura=$(el).height();   
-                    }    
-                }
-                
-        
-            });   
-            
-        }, 1000);
-        
-        setTimeout(function(){
-            $("#printEnlace").click( function() {
+    $(function() {
+        setTimeout(function() {
+            $("#printEnlace").click(function() {
                 $('.hero-unit').jqprint();
                 return false;
             });
         }, 1000);
-        
-        
-    })
+
+
+    });
 </script>

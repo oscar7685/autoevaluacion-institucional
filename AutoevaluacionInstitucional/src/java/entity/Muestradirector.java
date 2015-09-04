@@ -5,15 +5,25 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "muestradirector")
+@Table(name = "muestradirector", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Muestradirector.findAll", query = "SELECT m FROM Muestradirector m"),
@@ -31,12 +41,12 @@ public class Muestradirector implements Serializable {
     private String conglomerado;
     @Column(name = "metodo")
     private String metodo;
-    @JoinColumn(name = "directorprograma_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Directorprograma directorprogramaId;
     @JoinColumn(name = "muestra_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Muestra muestraId;
+    @JoinColumn(name = "directorprograma_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Directorprograma directorprogramaId;
 
     public Muestradirector() {
     }
@@ -69,20 +79,20 @@ public class Muestradirector implements Serializable {
         this.metodo = metodo;
     }
 
-    public Directorprograma getDirectorprogramaId() {
-        return directorprogramaId;
-    }
-
-    public void setDirectorprogramaId(Directorprograma directorprogramaId) {
-        this.directorprogramaId = directorprogramaId;
-    }
-
     public Muestra getMuestraId() {
         return muestraId;
     }
 
     public void setMuestraId(Muestra muestraId) {
         this.muestraId = muestraId;
+    }
+
+    public Directorprograma getDirectorprogramaId() {
+        return directorprogramaId;
+    }
+
+    public void setDirectorprogramaId(Directorprograma directorprogramaId) {
+        this.directorprogramaId = directorprogramaId;
     }
 
     @Override

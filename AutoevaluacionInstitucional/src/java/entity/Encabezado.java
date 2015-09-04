@@ -7,7 +7,21 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -16,13 +30,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Oscar
  */
 @Entity
-@Table(name = "encabezado")
+@Table(name = "encabezado", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Encabezado.findAll", query = "SELECT e FROM Encabezado e"),
     @NamedQuery(name = "Encabezado.findById", query = "SELECT e FROM Encabezado e WHERE e.id = :id"),
     @NamedQuery(name = "Encabezado.findByFecha", query = "SELECT e FROM Encabezado e WHERE e.fecha = :fecha"),
-    @NamedQuery(name = "Encabezado.findByEstado", query = "SELECT e FROM Encabezado e WHERE e.estado = :estado")})
+    @NamedQuery(name = "Encabezado.findByEstado", query = "SELECT e FROM Encabezado e WHERE e.estado = :estado"),
+    @NamedQuery(name = "Encabezado.findByComentario", query = "SELECT e FROM Encabezado e WHERE e.comentario = :comentario")})
 public class Encabezado implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -36,18 +51,20 @@ public class Encabezado implements Serializable {
     private Date fecha;
     @Column(name = "estado")
     private String estado;
-    @JoinColumn(name = "fuente_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Fuente fuenteId;
-    @JoinColumn(name = "encuesta_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Encuesta encuestaId;
+    @Column(name = "comentario")
+    private String comentario;
     @JoinColumn(name = "proceso_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Proceso procesoId;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Persona personaId;
+    @JoinColumn(name = "fuente_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Fuente fuenteId;
+    @JoinColumn(name = "encuesta_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Encuesta encuestaId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "encabezadoId")
     private List<Resultadoevaluacion> resultadoevaluacionList;
 
@@ -87,20 +104,12 @@ public class Encabezado implements Serializable {
         this.estado = estado;
     }
 
-    public Fuente getFuenteId() {
-        return fuenteId;
+    public String getComentario() {
+        return comentario;
     }
 
-    public void setFuenteId(Fuente fuenteId) {
-        this.fuenteId = fuenteId;
-    }
-
-    public Encuesta getEncuestaId() {
-        return encuestaId;
-    }
-
-    public void setEncuestaId(Encuesta encuestaId) {
-        this.encuestaId = encuestaId;
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 
     public Proceso getProcesoId() {
@@ -117,6 +126,22 @@ public class Encabezado implements Serializable {
 
     public void setPersonaId(Persona personaId) {
         this.personaId = personaId;
+    }
+
+    public Fuente getFuenteId() {
+        return fuenteId;
+    }
+
+    public void setFuenteId(Fuente fuenteId) {
+        this.fuenteId = fuenteId;
+    }
+
+    public Encuesta getEncuestaId() {
+        return encuestaId;
+    }
+
+    public void setEncuestaId(Encuesta encuestaId) {
+        this.encuestaId = encuestaId;
     }
 
     @XmlTransient

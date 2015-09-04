@@ -5,15 +5,25 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "muestraadministrativo")
+@Table(name = "muestraadministrativo", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Muestraadministrativo.findAll", query = "SELECT m FROM Muestraadministrativo m"),
@@ -31,12 +41,12 @@ public class Muestraadministrativo implements Serializable {
     private String conglomerado;
     @Column(name = "metodo")
     private String metodo;
-    @JoinColumn(name = "administrativo_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Administrativo administrativoId;
     @JoinColumn(name = "muestra_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Muestra muestraId;
+    @JoinColumn(name = "administrativo_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Administrativo administrativoId;
 
     public Muestraadministrativo() {
     }
@@ -69,20 +79,20 @@ public class Muestraadministrativo implements Serializable {
         this.metodo = metodo;
     }
 
-    public Administrativo getAdministrativoId() {
-        return administrativoId;
-    }
-
-    public void setAdministrativoId(Administrativo administrativoId) {
-        this.administrativoId = administrativoId;
-    }
-
     public Muestra getMuestraId() {
         return muestraId;
     }
 
     public void setMuestraId(Muestra muestraId) {
         this.muestraId = muestraId;
+    }
+
+    public Administrativo getAdministrativoId() {
+        return administrativoId;
+    }
+
+    public void setAdministrativoId(Administrativo administrativoId) {
+        this.administrativoId = administrativoId;
     }
 
     @Override

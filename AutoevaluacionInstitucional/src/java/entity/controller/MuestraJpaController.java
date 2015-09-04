@@ -4,14 +4,23 @@
  */
 package entity.controller;
 
-import entity.*;
+import entity.Muestra;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import entity.Proceso;
+import entity.Muestradocente;
 import java.util.ArrayList;
 import java.util.List;
+import entity.Muestraadministrativo;
+import entity.Muestradirector;
+import entity.Muestraegresado;
+import entity.Muestraagencia;
+import entity.Muestraestudiante;
+import entity.Muestraempleador;
+import entity.Muestracriterio;
 import entity.controller.exceptions.IllegalOrphanException;
 import entity.controller.exceptions.NonexistentEntityException;
 import javax.persistence.EntityManager;
@@ -19,7 +28,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 public class MuestraJpaController implements Serializable {
 

@@ -1787,12 +1787,10 @@ public class formController extends HttpServlet {
                 sqlController conSql = new sqlController();
                 Proceso p = (Proceso) session.getAttribute("proceso");
                 int idProceso = p.getId();
-                Date d = new Date();
-                String fecha = String.valueOf(d);
+                java.util.Date date = new java.util.Date();
                 java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
-                String date = sdf.format(fecha);
-                p.setFechainicio(date);
-
+                String fecha = sdf.format(date);
+                p.setFechainicio(fecha);
                 // valida ponderacion factores
                 int f = 0;
                 Result rs3 = null;
@@ -1805,7 +1803,7 @@ public class formController extends HttpServlet {
                     System.out.println("Debe asignar la ponderacion de factores");
                     session.setAttribute("aux_IniciarP", 0);
                 }
-
+                System.out.println("Todo bn hasta aqui2!!!");
                 // valida ponderacion caracteristicas
                 int c = 0;
                 Result rs4 = null;
@@ -1819,7 +1817,7 @@ public class formController extends HttpServlet {
                     System.out.println("Debe asignar la ponderacion de caracteristicas");
                     session.setAttribute("aux_IniciarP", 0);
                 }
-
+                System.out.println("Todo bn hasta aqui3!!!");
                 //  valida asig encuesta
                 int count = 0;
                 int count2 = 0;
@@ -1953,6 +1951,7 @@ public class formController extends HttpServlet {
                     } catch (Error ee) {
                         System.out.println("error: " + ee);
                     }
+
                 }
             } else if (request.getParameter("action").equals("evaluarInfoNumericaAI")
                     || request.getParameter("action").equals("evaluarInfoDocumentalAI")) {

@@ -5,15 +5,25 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "ponderacioncaracteristica")
+@Table(name = "ponderacioncaracteristica", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Ponderacioncaracteristica.findAll", query = "SELECT p FROM Ponderacioncaracteristica p"),
@@ -37,12 +47,12 @@ public class Ponderacioncaracteristica implements Serializable {
     @Basic(optional = false)
     @Column(name = "justificacion")
     private String justificacion;
-    @JoinColumn(name = "caracteristica_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Caracteristica caracteristicaId;
     @JoinColumn(name = "proceso_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Proceso procesoId;
+    @JoinColumn(name = "caracteristica_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Caracteristica caracteristicaId;
 
     public Ponderacioncaracteristica() {
     }
@@ -90,20 +100,20 @@ public class Ponderacioncaracteristica implements Serializable {
         this.justificacion = justificacion;
     }
 
-    public Caracteristica getCaracteristicaId() {
-        return caracteristicaId;
-    }
-
-    public void setCaracteristicaId(Caracteristica caracteristicaId) {
-        this.caracteristicaId = caracteristicaId;
-    }
-
     public Proceso getProcesoId() {
         return procesoId;
     }
 
     public void setProcesoId(Proceso procesoId) {
         this.procesoId = procesoId;
+    }
+
+    public Caracteristica getCaracteristicaId() {
+        return caracteristicaId;
+    }
+
+    public void setCaracteristicaId(Caracteristica caracteristicaId) {
+        this.caracteristicaId = caracteristicaId;
     }
 
     @Override

@@ -5,15 +5,25 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "ponderacionfactor")
+@Table(name = "ponderacionfactor", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Ponderacionfactor.findAll", query = "SELECT p FROM Ponderacionfactor p"),
@@ -33,12 +43,12 @@ public class Ponderacionfactor implements Serializable {
     @Basic(optional = false)
     @Column(name = "justificacion")
     private String justificacion;
-    @JoinColumn(name = "factor_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Factor factorId;
     @JoinColumn(name = "proceso_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Proceso procesoId;
+    @JoinColumn(name = "factor_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Factor factorId;
 
     public Ponderacionfactor() {
     }
@@ -77,20 +87,20 @@ public class Ponderacionfactor implements Serializable {
         this.justificacion = justificacion;
     }
 
-    public Factor getFactorId() {
-        return factorId;
-    }
-
-    public void setFactorId(Factor factorId) {
-        this.factorId = factorId;
-    }
-
     public Proceso getProcesoId() {
         return procesoId;
     }
 
     public void setProcesoId(Proceso procesoId) {
         this.procesoId = procesoId;
+    }
+
+    public Factor getFactorId() {
+        return factorId;
+    }
+
+    public void setFactorId(Factor factorId) {
+        this.factorId = factorId;
     }
 
     @Override

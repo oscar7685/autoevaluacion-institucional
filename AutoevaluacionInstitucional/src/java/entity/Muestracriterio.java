@@ -5,15 +5,25 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "muestracriterio")
+@Table(name = "muestracriterio", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Muestracriterio.findAll", query = "SELECT m FROM Muestracriterio m"),
@@ -28,15 +38,15 @@ public class Muestracriterio implements Serializable {
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Persona personaId;
-    @JoinColumn(name = "descripcioncriterio_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Descripcioncriterio descripcioncriterioId;
-    @JoinColumn(name = "fuente_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Fuente fuenteId;
     @JoinColumn(name = "muestra_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Muestra muestraId;
+    @JoinColumn(name = "fuente_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Fuente fuenteId;
+    @JoinColumn(name = "descripcioncriterio_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Descripcioncriterio descripcioncriterioId;
 
     public Muestracriterio() {
     }
@@ -61,12 +71,12 @@ public class Muestracriterio implements Serializable {
         this.personaId = personaId;
     }
 
-    public Descripcioncriterio getDescripcioncriterioId() {
-        return descripcioncriterioId;
+    public Muestra getMuestraId() {
+        return muestraId;
     }
 
-    public void setDescripcioncriterioId(Descripcioncriterio descripcioncriterioId) {
-        this.descripcioncriterioId = descripcioncriterioId;
+    public void setMuestraId(Muestra muestraId) {
+        this.muestraId = muestraId;
     }
 
     public Fuente getFuenteId() {
@@ -77,12 +87,12 @@ public class Muestracriterio implements Serializable {
         this.fuenteId = fuenteId;
     }
 
-    public Muestra getMuestraId() {
-        return muestraId;
+    public Descripcioncriterio getDescripcioncriterioId() {
+        return descripcioncriterioId;
     }
 
-    public void setMuestraId(Muestra muestraId) {
-        this.muestraId = muestraId;
+    public void setDescripcioncriterioId(Descripcioncriterio descripcioncriterioId) {
+        this.descripcioncriterioId = descripcioncriterioId;
     }
 
     @Override

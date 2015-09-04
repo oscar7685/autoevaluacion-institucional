@@ -4,12 +4,17 @@
  */
 package entity.controller;
 
-import entity.*;
+import entity.Encabezado;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import entity.Proceso;
+import entity.Persona;
+import entity.Fuente;
+import entity.Encuesta;
+import entity.Resultadoevaluacion;
 import entity.controller.exceptions.IllegalOrphanException;
 import entity.controller.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
@@ -19,7 +24,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 public class EncabezadoJpaController implements Serializable {
 
@@ -40,16 +45,6 @@ public class EncabezadoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Fuente fuenteId = encabezado.getFuenteId();
-            if (fuenteId != null) {
-                fuenteId = em.getReference(fuenteId.getClass(), fuenteId.getId());
-                encabezado.setFuenteId(fuenteId);
-            }
-            Encuesta encuestaId = encabezado.getEncuestaId();
-            if (encuestaId != null) {
-                encuestaId = em.getReference(encuestaId.getClass(), encuestaId.getId());
-                encabezado.setEncuestaId(encuestaId);
-            }
             Proceso procesoId = encabezado.getProcesoId();
             if (procesoId != null) {
                 procesoId = em.getReference(procesoId.getClass(), procesoId.getId());
@@ -60,6 +55,16 @@ public class EncabezadoJpaController implements Serializable {
                 personaId = em.getReference(personaId.getClass(), personaId.getId());
                 encabezado.setPersonaId(personaId);
             }
+            Fuente fuenteId = encabezado.getFuenteId();
+            if (fuenteId != null) {
+                fuenteId = em.getReference(fuenteId.getClass(), fuenteId.getId());
+                encabezado.setFuenteId(fuenteId);
+            }
+            Encuesta encuestaId = encabezado.getEncuestaId();
+            if (encuestaId != null) {
+                encuestaId = em.getReference(encuestaId.getClass(), encuestaId.getId());
+                encabezado.setEncuestaId(encuestaId);
+            }
             List<Resultadoevaluacion> attachedResultadoevaluacionList = new ArrayList<Resultadoevaluacion>();
             for (Resultadoevaluacion resultadoevaluacionListResultadoevaluacionToAttach : encabezado.getResultadoevaluacionList()) {
                 resultadoevaluacionListResultadoevaluacionToAttach = em.getReference(resultadoevaluacionListResultadoevaluacionToAttach.getClass(), resultadoevaluacionListResultadoevaluacionToAttach.getIdResultadoEvaluacion());
@@ -67,14 +72,6 @@ public class EncabezadoJpaController implements Serializable {
             }
             encabezado.setResultadoevaluacionList(attachedResultadoevaluacionList);
             em.persist(encabezado);
-            if (fuenteId != null) {
-                fuenteId.getEncabezadoList().add(encabezado);
-                fuenteId = em.merge(fuenteId);
-            }
-            if (encuestaId != null) {
-                encuestaId.getEncabezadoList().add(encabezado);
-                encuestaId = em.merge(encuestaId);
-            }
             if (procesoId != null) {
                 procesoId.getEncabezadoList().add(encabezado);
                 procesoId = em.merge(procesoId);
@@ -82,6 +79,14 @@ public class EncabezadoJpaController implements Serializable {
             if (personaId != null) {
                 personaId.getEncabezadoList().add(encabezado);
                 personaId = em.merge(personaId);
+            }
+            if (fuenteId != null) {
+                fuenteId.getEncabezadoList().add(encabezado);
+                fuenteId = em.merge(fuenteId);
+            }
+            if (encuestaId != null) {
+                encuestaId.getEncabezadoList().add(encabezado);
+                encuestaId = em.merge(encuestaId);
             }
             for (Resultadoevaluacion resultadoevaluacionListResultadoevaluacion : encabezado.getResultadoevaluacionList()) {
                 Encabezado oldEncabezadoIdOfResultadoevaluacionListResultadoevaluacion = resultadoevaluacionListResultadoevaluacion.getEncabezadoId();
@@ -106,14 +111,14 @@ public class EncabezadoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Encabezado persistentEncabezado = em.find(Encabezado.class, encabezado.getId());
-            Fuente fuenteIdOld = persistentEncabezado.getFuenteId();
-            Fuente fuenteIdNew = encabezado.getFuenteId();
-            Encuesta encuestaIdOld = persistentEncabezado.getEncuestaId();
-            Encuesta encuestaIdNew = encabezado.getEncuestaId();
             Proceso procesoIdOld = persistentEncabezado.getProcesoId();
             Proceso procesoIdNew = encabezado.getProcesoId();
             Persona personaIdOld = persistentEncabezado.getPersonaId();
             Persona personaIdNew = encabezado.getPersonaId();
+            Fuente fuenteIdOld = persistentEncabezado.getFuenteId();
+            Fuente fuenteIdNew = encabezado.getFuenteId();
+            Encuesta encuestaIdOld = persistentEncabezado.getEncuestaId();
+            Encuesta encuestaIdNew = encabezado.getEncuestaId();
             List<Resultadoevaluacion> resultadoevaluacionListOld = persistentEncabezado.getResultadoevaluacionList();
             List<Resultadoevaluacion> resultadoevaluacionListNew = encabezado.getResultadoevaluacionList();
             List<String> illegalOrphanMessages = null;
@@ -128,14 +133,6 @@ public class EncabezadoJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            if (fuenteIdNew != null) {
-                fuenteIdNew = em.getReference(fuenteIdNew.getClass(), fuenteIdNew.getId());
-                encabezado.setFuenteId(fuenteIdNew);
-            }
-            if (encuestaIdNew != null) {
-                encuestaIdNew = em.getReference(encuestaIdNew.getClass(), encuestaIdNew.getId());
-                encabezado.setEncuestaId(encuestaIdNew);
-            }
             if (procesoIdNew != null) {
                 procesoIdNew = em.getReference(procesoIdNew.getClass(), procesoIdNew.getId());
                 encabezado.setProcesoId(procesoIdNew);
@@ -143,6 +140,14 @@ public class EncabezadoJpaController implements Serializable {
             if (personaIdNew != null) {
                 personaIdNew = em.getReference(personaIdNew.getClass(), personaIdNew.getId());
                 encabezado.setPersonaId(personaIdNew);
+            }
+            if (fuenteIdNew != null) {
+                fuenteIdNew = em.getReference(fuenteIdNew.getClass(), fuenteIdNew.getId());
+                encabezado.setFuenteId(fuenteIdNew);
+            }
+            if (encuestaIdNew != null) {
+                encuestaIdNew = em.getReference(encuestaIdNew.getClass(), encuestaIdNew.getId());
+                encabezado.setEncuestaId(encuestaIdNew);
             }
             List<Resultadoevaluacion> attachedResultadoevaluacionListNew = new ArrayList<Resultadoevaluacion>();
             for (Resultadoevaluacion resultadoevaluacionListNewResultadoevaluacionToAttach : resultadoevaluacionListNew) {
@@ -152,22 +157,6 @@ public class EncabezadoJpaController implements Serializable {
             resultadoevaluacionListNew = attachedResultadoevaluacionListNew;
             encabezado.setResultadoevaluacionList(resultadoevaluacionListNew);
             encabezado = em.merge(encabezado);
-            if (fuenteIdOld != null && !fuenteIdOld.equals(fuenteIdNew)) {
-                fuenteIdOld.getEncabezadoList().remove(encabezado);
-                fuenteIdOld = em.merge(fuenteIdOld);
-            }
-            if (fuenteIdNew != null && !fuenteIdNew.equals(fuenteIdOld)) {
-                fuenteIdNew.getEncabezadoList().add(encabezado);
-                fuenteIdNew = em.merge(fuenteIdNew);
-            }
-            if (encuestaIdOld != null && !encuestaIdOld.equals(encuestaIdNew)) {
-                encuestaIdOld.getEncabezadoList().remove(encabezado);
-                encuestaIdOld = em.merge(encuestaIdOld);
-            }
-            if (encuestaIdNew != null && !encuestaIdNew.equals(encuestaIdOld)) {
-                encuestaIdNew.getEncabezadoList().add(encabezado);
-                encuestaIdNew = em.merge(encuestaIdNew);
-            }
             if (procesoIdOld != null && !procesoIdOld.equals(procesoIdNew)) {
                 procesoIdOld.getEncabezadoList().remove(encabezado);
                 procesoIdOld = em.merge(procesoIdOld);
@@ -183,6 +172,22 @@ public class EncabezadoJpaController implements Serializable {
             if (personaIdNew != null && !personaIdNew.equals(personaIdOld)) {
                 personaIdNew.getEncabezadoList().add(encabezado);
                 personaIdNew = em.merge(personaIdNew);
+            }
+            if (fuenteIdOld != null && !fuenteIdOld.equals(fuenteIdNew)) {
+                fuenteIdOld.getEncabezadoList().remove(encabezado);
+                fuenteIdOld = em.merge(fuenteIdOld);
+            }
+            if (fuenteIdNew != null && !fuenteIdNew.equals(fuenteIdOld)) {
+                fuenteIdNew.getEncabezadoList().add(encabezado);
+                fuenteIdNew = em.merge(fuenteIdNew);
+            }
+            if (encuestaIdOld != null && !encuestaIdOld.equals(encuestaIdNew)) {
+                encuestaIdOld.getEncabezadoList().remove(encabezado);
+                encuestaIdOld = em.merge(encuestaIdOld);
+            }
+            if (encuestaIdNew != null && !encuestaIdNew.equals(encuestaIdOld)) {
+                encuestaIdNew.getEncabezadoList().add(encabezado);
+                encuestaIdNew = em.merge(encuestaIdNew);
             }
             for (Resultadoevaluacion resultadoevaluacionListNewResultadoevaluacion : resultadoevaluacionListNew) {
                 if (!resultadoevaluacionListOld.contains(resultadoevaluacionListNewResultadoevaluacion)) {
@@ -235,16 +240,6 @@ public class EncabezadoJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Fuente fuenteId = encabezado.getFuenteId();
-            if (fuenteId != null) {
-                fuenteId.getEncabezadoList().remove(encabezado);
-                fuenteId = em.merge(fuenteId);
-            }
-            Encuesta encuestaId = encabezado.getEncuestaId();
-            if (encuestaId != null) {
-                encuestaId.getEncabezadoList().remove(encabezado);
-                encuestaId = em.merge(encuestaId);
-            }
             Proceso procesoId = encabezado.getProcesoId();
             if (procesoId != null) {
                 procesoId.getEncabezadoList().remove(encabezado);
@@ -254,6 +249,16 @@ public class EncabezadoJpaController implements Serializable {
             if (personaId != null) {
                 personaId.getEncabezadoList().remove(encabezado);
                 personaId = em.merge(personaId);
+            }
+            Fuente fuenteId = encabezado.getFuenteId();
+            if (fuenteId != null) {
+                fuenteId.getEncabezadoList().remove(encabezado);
+                fuenteId = em.merge(fuenteId);
+            }
+            Encuesta encuestaId = encabezado.getEncuestaId();
+            if (encuestaId != null) {
+                encuestaId.getEncabezadoList().remove(encabezado);
+                encuestaId = em.merge(encuestaId);
             }
             em.remove(encabezado);
             em.getTransaction().commit();

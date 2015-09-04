@@ -5,15 +5,25 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Oscar
+ * @author Ususario
  */
 @Entity
-@Table(name = "muestradocente")
+@Table(name = "muestradocente", catalog = "autoevaluacion", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Muestradocente.findAll", query = "SELECT m FROM Muestradocente m"),
@@ -31,12 +41,12 @@ public class Muestradocente implements Serializable {
     private String conglomerado;
     @Column(name = "metodo")
     private String metodo;
-    @JoinColumn(name = "docente_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Docente docenteId;
     @JoinColumn(name = "muestra_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Muestra muestraId;
+    @JoinColumn(name = "docente_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Docente docenteId;
 
     public Muestradocente() {
     }
@@ -69,20 +79,20 @@ public class Muestradocente implements Serializable {
         this.metodo = metodo;
     }
 
-    public Docente getDocenteId() {
-        return docenteId;
-    }
-
-    public void setDocenteId(Docente docenteId) {
-        this.docenteId = docenteId;
-    }
-
     public Muestra getMuestraId() {
         return muestraId;
     }
 
     public void setMuestraId(Muestra muestraId) {
         this.muestraId = muestraId;
+    }
+
+    public Docente getDocenteId() {
+        return docenteId;
+    }
+
+    public void setDocenteId(Docente docenteId) {
+        this.docenteId = docenteId;
     }
 
     @Override
