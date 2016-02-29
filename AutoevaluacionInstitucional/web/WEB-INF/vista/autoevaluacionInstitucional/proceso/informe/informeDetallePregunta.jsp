@@ -281,7 +281,7 @@
     <div class="row">
         <div id="conte" class="span10">
             <br/>
-            <legend>Pregunta: ${detallePregunta.getRowsByIndex()[0][0]}</legend>
+            <legend>Pregunta: ${detallePregunta.getRowsByIndex()[0][11]} ${detallePregunta.getRowsByIndex()[0][0]}</legend>
             <ul class="breadcrumb">
                 <li><a href="<%=request.getContextPath()%>/#informeMatrizFactores">Matriz de Calidad de Factores</a> <span class="divider">/</span></li>
                 <li><a href="<%=request.getContextPath()%>/#informeMatriz">Matriz de Calidad de Características</a> <span class="divider">/</span></li>

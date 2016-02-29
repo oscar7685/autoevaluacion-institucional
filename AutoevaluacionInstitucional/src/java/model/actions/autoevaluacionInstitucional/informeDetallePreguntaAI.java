@@ -35,11 +35,13 @@ public class informeDetallePreguntaAI implements Action {
         + "count( CASE WHEN respuesta = '2' THEN 1 ELSE null end) , "
         + "count( CASE WHEN respuesta = '3' THEN 1 ELSE null end) , "
         + "count( CASE WHEN respuesta = '4' THEN 1 ELSE null end) , "
-        + "count( CASE WHEN respuesta = '5' THEN 1 ELSE null end) "
+        + "count( CASE WHEN respuesta = '5' THEN 1 ELSE null end) , "
+        + "padre.pregunta "        
         + "FROM `resultadoevaluacion`  "
         + "INNER JOIN encabezado ON encabezado.id = resultadoevaluacion.encabezado_id "
         + "INNER JOIN encuesta ON encuesta.id = encabezado.encuesta_id "
         + "INNER JOIN pregunta ON pregunta.id = resultadoevaluacion.pregunta_id "
+        + "LEFT JOIN pregunta as padre on pregunta.pregunta_padre = padre.id "        
         + "WHERE pregunta.id ="+idP+" "
         + "group by encuesta.id";
         detallePregunta = conSql.CargarSql2(sql2, bd);

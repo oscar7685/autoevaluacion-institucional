@@ -37,12 +37,15 @@ public class informeDetallePIndicadorAI implements Action {
                 + "count( CASE WHEN respuesta = '2' THEN 1 ELSE null end) as '2', "
                 + "count( CASE WHEN respuesta = '3' THEN 1 ELSE null end) as '3', "
                 + "count( CASE WHEN respuesta = '4' THEN 1 ELSE null end) as '4', "
-                + "count( CASE WHEN respuesta = '5' THEN 1 ELSE null end) as '5' "
+                + "count( CASE WHEN respuesta = '5' THEN 1 ELSE null end) as '5', "
+                + "pregunta.tipo, "
+                + "padre.pregunta "
                 + "FROM resultadoevaluacion "
                 + "INNER JOIN pregunta ON pregunta.id=resultadoevaluacion.pregunta_id "
                 + "INNER JOIN indicador ON indicador.id=pregunta.indicador_id "
                 + "INNER JOIN caracteristica ON caracteristica.id = indicador.caracteristica_id "
-                + "WHERE pregunta.tipo = 'elegir 1-5' "
+                + "left join pregunta as padre on pregunta.pregunta_padre = padre.id "
+                + "WHERE (pregunta.tipo = 'elegir 1-5' or pregunta.tipo = 'item') "
                 + "AND indicador.id =" + idI + " "
                 + "GROUP BY pregunta.id";
         detalleIndicador = conSql.CargarSql2(sql2, bd);

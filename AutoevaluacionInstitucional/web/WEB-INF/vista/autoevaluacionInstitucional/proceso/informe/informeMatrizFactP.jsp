@@ -174,7 +174,14 @@
         <c:choose>
             <c:when test="${matrizFactores1.getRowCount()!=status33.index+1}">
                 <c:choose>
-                    <c:when test="${factor2[3]>=4.5}">
+                    <c:when test="${factor2[3]==null}">
+                        { 
+                            y:0
+                        },
+                    </c:when>
+                    <c:otherwise>
+                        <c:choose>
+                              <c:when test="${factor2[3]>=4.5}">
                                             {
                                                 y: ${factor2[3]},
                                                 color: '#89A54E'
@@ -208,6 +215,8 @@
                                                 color: '#AA4643'
                                             },
                     </c:otherwise>
+                        </c:choose>
+                    </c:otherwise>    
                 </c:choose>
                                             
                                             
@@ -217,8 +226,15 @@
                 
             </c:when>
             <c:otherwise>
-                <c:choose>
-                    <c:when test="${factor2[3]>=4.5}">
+                    <c:choose>
+                        <c:when test="${factor2[3] == null}">
+                           { 
+                               y:0
+                           }
+                        </c:when>
+                        <c:otherwise>
+                            <c:choose>
+                                  <c:when test="${factor2[3]>=4.5}">
                                             {
                                                 y: ${factor2[3]},
                                                 color: '#89A54E'
@@ -252,13 +268,10 @@
                                                 color: '#AA4643'
                                             }
                     </c:otherwise>
-                </c:choose>
-                
-                
-                                        
-                
-        
-            </c:otherwise>
+                            </c:choose>
+                        </c:otherwise>    
+                    </c:choose>
+             </c:otherwise>
         </c:choose>             
             
     </c:forEach>

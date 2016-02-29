@@ -94,7 +94,7 @@ public class informeMatrizFactPAI implements Action {
         }
 
 
-
+        System.out.println("todo bn+++++++++++++++++++++++++++++++++++++++++++++++++++");
         session.setAttribute("matrizFactores1", matrizFactores);
         String url = "/WEB-INF/vista/autoevaluacionInstitucional/proceso/informe/informeMatrizFactP.jsp";
         return url;
