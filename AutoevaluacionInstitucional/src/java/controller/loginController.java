@@ -328,7 +328,7 @@ public class loginController extends HttpServlet {
                                                     if (proceso.getFechainicio().equals("Proceso en Configuración.")) {
                                                         session.setAttribute("aux_index2", 1);
                                                         session.setAttribute("aux_IniciarP", 0);
-                                                        System.out.println("Proceso en configuración");
+                                                        //System.out.println("Proceso en configuración");
                                                     } else {
                                                         session.setAttribute("aux_index2", 2);
                                                         session.setAttribute("aux_IniciarP", 1);

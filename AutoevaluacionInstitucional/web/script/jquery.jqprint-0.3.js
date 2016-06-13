@@ -62,7 +62,7 @@
         }
             
             
-        doc.write("<table cellspacing='2' class='span11'><tr><td style='align: left'><img src='css/images/LogoUdeC2.png'></td><td style='text-align: right'><img src='css/images/SIAUDEC.png'></td></tr><table><h4 style='padding-top: 15px;'>Proceso de Autoevaluación Institucional</h4>");
+        //doc.write("<table cellspacing='2' class='span11'><tr><td style='align: left'><img src='css/images/LogoUdeC2.png'></td><td style='text-align: right'><img src='css/images/SIAUDEC.png'></td></tr><table><h4 style='padding-top: 15px;'>Proceso de Autoevaluación Institucional</h4>");
         if (opt.printContainer) {
             doc.write($element.outer());
         }

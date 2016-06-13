@@ -30,6 +30,20 @@ public class sqlController {
         System.out.println("[CONEXION RECIBIDA]");
     }
 
+    public Connection getConnection() {
+        if (isConected()) {
+            return this.con;
+        } else {
+            sqlConnection conSql = new sqlConnection();
+            conSql.conectarMySQL("institucional1");
+            this.setConexion(conSql);
+
+            return this.con;
+
+        }
+
+    }
+
     ///////////////////////////////////////////////////////////////////////
     public boolean isConected() {
         boolean result = false;
@@ -76,7 +90,6 @@ public class sqlController {
         String nameBd = nombre + id;
 
         this.cargarScript(nameBd, script);
-
 
         script = str2;
         this.cargarScript(nameBd, script);
@@ -132,44 +145,43 @@ public class sqlController {
 
     public ResultSet CargarSql(String sql, String bd) {
 
-
         ResultSet rs = null;
-        Connection con = null;
-        sqlConnection sqlCon = new sqlConnection();
+        
 
         try {
 
-            sqlCon.conectarMySQL(bd);
-            con = (Connection) sqlCon.getConnection();
+            this.getConnection();
 
             Statement st = (Statement) con.createStatement();
             // System.out.println("Se ha realizado con exito la conexion a MySQL");
             //el resultSet es el encargado de traer los datos de la consulta
             rs = st.executeQuery(sql);
 
-
         } catch (SQLException ex) {
             System.out.println(ex);
         } catch (Error ex) {
             System.out.println(ex);
+        } finally {
+            /* try {
+             con.close();
+             //System.out.println("sqlConnection Cerrada con Exito...");
+             } catch (SQLException ex) {
+             System.out.println(ex);
+             }*/
         }
         return rs;
     }
 
     public Result CargarSql2(String sql, String bd) {
 
-
         ResultSet rs = null;
         Result result = null;
-        Connection con = null;
-        sqlConnection sqlCon = new sqlConnection();
+        
 
         try {
 
-            sqlCon.conectarMySQL(bd);
+            this.getConnection();
             //   System.out.println("**" + bd);
-
-            con = (Connection) sqlCon.getConnection();
 
             Statement st = (Statement) con.createStatement();
             //  System.out.println("Se ha realizado con exito la conexion a MySQL");
@@ -178,11 +190,17 @@ public class sqlController {
             rs = st.executeQuery(sql);
             result = ResultSupport.toResult(rs);
 
-
         } catch (SQLException ex) {
             System.out.println(ex);
         } catch (Error ex) {
             System.out.println(ex);
+        } finally {
+            /*try {
+             con.close();
+             //System.out.println("sqlConnection Cerrada con Exito...");
+             } catch (SQLException ex) {
+             System.out.println(ex);
+             }*/
         }
         return result;
     }
@@ -191,18 +209,14 @@ public class sqlController {
 
         boolean aux = true;
         String id = "";
-        Connection con = null;
-        sqlConnection sqlCon = new sqlConnection();
+        
 
         try {
-            sqlCon.conectarMySQL(bd);
-            con = (Connection) sqlCon.getConnection();
-
+            this.getConnection();
             Statement st = (Statement) con.createStatement();
             // System.out.println("Se ha realizado con exito la conexion a MySQL");
 
             st.executeUpdate(sql);
-
 
         } catch (SQLException ex) {
             aux = false;
@@ -210,12 +224,12 @@ public class sqlController {
         } catch (Error ex) {
             System.out.println(ex);
         } finally {
-            try {
+            /*try {
                 con.close();
                 //System.out.println("sqlConnection Cerrada con Exito...");
             } catch (SQLException ex) {
                 System.out.println(ex);
-            }
+            }*/
         }
         return aux;
     }

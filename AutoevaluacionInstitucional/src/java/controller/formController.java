@@ -1139,11 +1139,16 @@ public class formController extends HttpServlet {
                     try {
                         conSql.UpdateSql("TRUNCATE TABLE `" + tabla + "`", bd);
 
-                        String sql = "DELETE " + tabla1 + " from " + tabla1 + " inner join persona on " + tabla1 + ".persona_id = persona.id where persona.nombre = '" + f.getNombre() + "' and persona.apellido = 'Usuario aleatorio'";
+                        String sql = "DELETE " + tabla1 + " from " + tabla1 + " inner join persona on " 
+                                + tabla1 + ".persona_id = persona.id where persona.nombre = '" 
+                                + f.getNombre() + "' and persona.apellido = 'Usuario aleatorio'";
                         conSql.UpdateSql(sql, bd);
                         conSql.UpdateSql(sql, "autoevaluacion");
 
-                        sql = "DELETE muestracriterio from muestracriterio inner join persona on muestracriterio.persona_id = persona.id where persona.nombre = '" + f.getNombre() + "' and persona.apellido = 'Usuario aleatorio'";
+                        sql = "DELETE muestracriterio from muestracriterio inner join persona on "
+                                + "muestracriterio.persona_id = persona.id "
+                                + "where persona.nombre = '" + f.getNombre() + "' "
+                                + "and persona.apellido = 'Usuario aleatorio'";
                         conSql.UpdateSql(sql, bd);
 
                         sql = "DELETE from persona where persona.nombre = '" + f.getNombre() + "' and persona.apellido = 'Usuario aleatorio'";
@@ -1167,10 +1172,17 @@ public class formController extends HttpServlet {
                             if (metodo.equals("normal")) {
                                 String sql;
                                 if (id == 1) {
-                                    sql = "SELECT * FROM " + tabla1 + " inner join programa on estudiante.programa_id = programa.id where (" + tabla1 + ".programa_id = " + programa + " and " + tabla1 + ".semestre != 1 and " + tabla1 + ".semestre != 2 and " + tabla1 + ".semestre < 10 ) or (programa.descripcion='Postgrado' and " + tabla1 + ".programa_id = " + programa + ") ORDER BY Rand() LIMIT " + muestra;
+                                    sql = "SELECT * FROM " + tabla1 + " inner join programa on "
+                                            + "estudiante.programa_id = programa.id "
+                                            + "where (" + tabla1 + ".programa_id = " + programa + " and " 
+                                            + tabla1 + ".semestre != 1 and " + tabla1 + ".semestre != 2 and " 
+                                            + tabla1 + ".semestre < 10 ) or (programa.descripcion='Postgrado' and " 
+                                            + tabla1 + ".programa_id = " + programa + ") ORDER BY Rand() LIMIT " + muestra;
 
                                 } else {
-                                    sql = "SELECT * FROM " + tabla1 + " where " + tabla1 + ".programa_id = " + programa + " ORDER BY Rand() LIMIT " + muestra;
+                                    sql = "SELECT * FROM " + tabla1 
+                                            + " where " + tabla1 + ".programa_id = " + programa 
+                                            + " ORDER BY Rand() LIMIT " + muestra;
                                 }
                                 ResultSet rs1 = conSql.CargarSql(sql, bd);
                                 if (rs1 != null) {
@@ -1484,7 +1496,12 @@ public class formController extends HttpServlet {
                                 if (inputAux.equals("automatic")) {
                                     ArrayList l = new ArrayList();
                                     String s;
-                                    sql2 = "SELECT facultad.nombre AS 'FACULTAD', programa.nombre AS 'PROGRAMA POSTGRADO', programa.descripcion, COUNT( * ) AS 'POBLACION', IF(programa.descripcion = 'Pregrado', ROUND( (count( * ) * 0.06193092419200908 ) * 1.4, 0), (ROUND( (count( * ) * 0.06193092419200908 ) * 1.4, 0)+2)), programa.id FROM " + tabla1 + " INNER JOIN programa ON " + tabla1 + ".programa_id = programa.id INNER JOIN facultad ON programa.facultad_id = facultad.id GROUP BY " + tabla1 + ".programa_id ORDER BY `facultad`.`nombre` ASC, programa.descripcion";
+                                    sql2 = "SELECT facultad.nombre AS 'FACULTAD', programa.nombre , programa.descripcion, "
+                                            + "COUNT(*) AS 'POBLACION', "
+                                            + "ROUND((count( * ) *" + cociente + ")), "
+                                            + "programa.id FROM " + tabla1 + " INNER JOIN programa ON " + tabla1 + ".programa_id = programa.id "
+                                            + "INNER JOIN facultad ON programa.facultad_id = facultad.id "
+                                            + "GROUP BY " + tabla1 + ".programa_id ORDER BY `facultad`.`nombre` ASC, programa.descripcion";
                                     //sql2 = "Select programa.nombre, ROUND((count(*)*" + cociente + ")*1.4,0), programa.id from " + tabla1 + " inner join programa on " + tabla1 + ".programa_id = programa.id group by " + tabla1 + ".programa_id order by programa.nombre";
                                     result = conSql.CargarSql2(sql2, bd);
                                     session.setAttribute("muestraCalculada", result);
@@ -1763,7 +1780,7 @@ public class formController extends HttpServlet {
                     if (p.getFechainicio().equals("Proceso en Configuración.")) {
                         session.setAttribute("aux_index2", 1);
                         session.setAttribute("aux_IniciarP", 0);
-                        System.out.println("Proceso en configuración");
+                        //System.out.println("Proceso en configuración");
                     } else {
                         session.setAttribute("aux_index2", 2);
                         session.setAttribute("aux_IniciarP", 1);

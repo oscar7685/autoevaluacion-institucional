@@ -59,6 +59,7 @@ public class sqlConnection {
         String nombreBD = bd;
         String usuario = "root";
         String clave = "institucional";
+        String puerto = "3307";
         /*192.168.8.2
          * autoeval
          * autoeval2012*/
@@ -72,7 +73,7 @@ public class sqlConnection {
             e.printStackTrace();
         }
         try {
-            String url = "jdbc:mysql://" + maquina + ":3307/" + nombreBD;
+            String url = "jdbc:mysql://" + maquina + ":"+puerto+"/" + nombreBD;
             conexion = (Connection) DriverManager.getConnection(url, usuario, clave);
            // System.out.println("conectado a " + bd);
         } catch (SQLException e) {

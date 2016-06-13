@@ -58,7 +58,7 @@
                     <thead>
                     <th>Facultad</th>
                     <th>Programa</th>
-                    <th>Descripción</th>
+                    <!--<th>Descripción</th>-->
                     <th>Población</th>
                     <th>Muestra</th>
                     </thead>
@@ -67,7 +67,7 @@
                             <tr>
                                 <td>${item2[0]}</td>
                                 <td>${item2[1]}</td>
-                                <td>${item2[2]}</td>
+                                <%--<td>${item2[2]}</td>--%>
                                 <td style="text-align: right">${item2[3]}</td>
                                 <c:choose>
                                     <c:when test="${item2[4]==0}">
