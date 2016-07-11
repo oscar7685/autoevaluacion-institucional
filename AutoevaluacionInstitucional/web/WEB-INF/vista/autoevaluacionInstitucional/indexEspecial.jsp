@@ -1210,7 +1210,6 @@ $(".page_loading").hide();
                 </div>
                 <div align="center" style="bottom: 0px; width: 230px; position: absolute;">
                     <a style="width: 230px;" title="Autoevaluación Institucional" href="http://autoevaluacioninstitucional.unicartagena.edu.co/" target="_blank"><img src="<%=request.getContextPath()%>/css/selloAcreditacion.png" style="width: 230px;"></img></a>
-                        <%--<a style="width: 230px;" title="Esoluciones" href="http://www.iesoluciones.com/esoluciones/index.php" target="_blank"><img src="<%=request.getContextPath()%>/css/images/esoluciones.PNG" style="width: 230px;"></img></a>--%>
                     <a style="width: 230px;" title="Universidad de Cartagena" href="http://www.unicartagena.edu.co/" target="_blank"><img src="<%=request.getContextPath()%>/css/LogoUdeC.png" style="width: 230px;"></img></a>
                 </div>
             </div>

@@ -57,7 +57,6 @@ public class AsignacionMuestraAI implements Action {
         }
         
         if (ayu == 0) {
-            System.out.println("ayuda");
             conSql.UpdateSql("INSERT INTO `" + bd + "`.`muestra` (`id`, `formula`, `proceso_id`) VALUES (NULL, NULL, '" + idProceso + "')", "autoevaluacion");
             try {
                 while (rs3.next()) {
