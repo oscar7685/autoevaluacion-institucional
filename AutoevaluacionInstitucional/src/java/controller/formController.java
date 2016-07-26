@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -475,36 +476,128 @@ public class formController extends HttpServlet {
 
                 String idP = request.getParameter("programas2");
                 String idS = request.getParameter("semestres2");
-
+                String sql2 = "";
                 //Estatico
                 if (id == 1) {
 
                     tabla = "muestraestudiante";
                     tabla1 = "estudiante";
+                    sql2 = "delete t1 from `" + tabla + "` t1 inner join estudiante on t1.estudiante_id = estudiante.id  where `muestra_id` = " + idMuestra + " and estudiante.programa_id = " + idP + " and estudiante.semestre = " + idS;
 
                 } else if (id == 2) {
 
                     tabla = "muestradocente";
                     tabla1 = "docente";
-                }
+                    idP = request.getParameter("programas");
+                    Collection nuevos = new ArrayList();
+                    Collection viejos = new ArrayList();
+                    String DocentesViejos = "select docente.id from muestradocente\n"
+                            + "inner join docente on docente.id = muestradocente.docente_id\n"
+                            + "inner join programa on programa.id = docente.programa_id\n"
+                            + "where programa.id = '" + idP + "'";
 
-                String sql2 = "delete t1 from `" + tabla + "` t1 inner join estudiante on t1.estudiante_id = estudiante.id  where `muestra_id` = " + idMuestra + " and estudiante.programa_id = " + idP + " and estudiante.semestre = " + idS;
-                conSql.UpdateSql(sql2, bd);
+                    ResultSet rsDoViejos = conSql.CargarSql(DocentesViejos, bd);
+                     try {
+                        while (rsDoViejos.next()) {
+                            viejos.add(rsDoViejos.getInt(1));
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(formController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    String TodosLosDocentesDelProgramaX = "select docente.id from docente "
+                            + "where docente.programa_id = '" + idP + "'";
+                    ResultSet rsTodosDoc = conSql.CargarSql(TodosLosDocentesDelProgramaX, bd);
+                    try {
+                        while (rsTodosDoc.next()) {
+                            if ("1".equals(request.getParameter(String.valueOf(rsTodosDoc.getInt(1))))) {
+                                nuevos.add(rsTodosDoc.getInt(1));
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        
+                        Logger.getLogger(formController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    Collection viejos2 = new ArrayList(viejos);
+                    viejos.removeAll(nuevos); // quedan solo las id de las personas que han sido eliminadas
+                    nuevos.removeAll(viejos2); //quedan solo las id de las personas que han sido agregadas
+
+                    for (Object object : viejos) {
+                        String docenteEliminarDeMuestra = "delete t1 from muestradocente t1 inner join docente on t1.docente_id = docente.id where docente.id = '"+object+"'";
+                        conSql.UpdateSql(docenteEliminarDeMuestra, bd);
+                    }
+
+                    for (Object object : nuevos) {
+                        String docenteAIngresar  = "INSERT INTO `muestradocente` (`id`, `muestra_id`, `docente_id`, `conglomerado`, `metodo` ) "
+                                + "VALUES (NULL, '" + idMuestra + "', '" + object + "', 'programa', 'normal')";
+                        conSql.UpdateSql(docenteAIngresar, bd);
+                    }
+                    
+                    
+                } else if (id == 5) {
+                    idP = request.getParameter("programas");
+                    Collection nuevos = new ArrayList();
+                    Collection viejos = new ArrayList();
+                    String EgresadosViejos = "select egresado.id from muestraegresado\n"
+                            + "inner join egresado on egresado.id = muestraegresado.egresado_id\n"
+                            + "inner join programa on programa.id = egresado.programa_id\n"
+                            + "where programa.id = '" + idP + "'";
+
+                    ResultSet rsEgViejos = conSql.CargarSql(EgresadosViejos, bd);
+
+                    try {
+                        while (rsEgViejos.next()) {
+                            viejos.add(rsEgViejos.getInt(1));
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(formController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    String TodosLosEgresadosDelProgramaX = "select egresado.id from egresado "
+                            + "where egresado.programa_id = '" + idP + "'";
+                    ResultSet rsTodosEgr = conSql.CargarSql(TodosLosEgresadosDelProgramaX, bd);
+                    try {
+                        while (rsTodosEgr.next()) {
+                            if ("1".equals(request.getParameter(String.valueOf(rsTodosEgr.getInt(1))))) {
+                                nuevos.add(rsTodosEgr.getInt(1));
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        
+                        Logger.getLogger(formController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    Collection viejos2 = new ArrayList(viejos);
+                    viejos.removeAll(nuevos); // quedan solo las cedulas de las personas que han sido eliminadas
+                    nuevos.removeAll(viejos2); //quedan solo las cedulas de las personas que han sido agregadas
+
+                    for (Object object : viejos) {
+                        String egresadoEliminarDeMuestra = "delete t1 from muestraegresado t1 inner join egresado on t1.egresado_id = egresado.id where egresado.id = '"+object+"'";
+                        conSql.UpdateSql(egresadoEliminarDeMuestra, bd);
+                    }
+
+                    for (Object object : nuevos) {
+                        String egresadoAIngresar  = "INSERT INTO `muestraegresado` (`id`, `muestra_id`, `egresado_id`, `conglomerado`, `metodo` ) "
+                                + "VALUES (NULL, '" + idMuestra + "', '" + object + "', 'programa', 'normal')";
+                        conSql.UpdateSql(egresadoAIngresar, bd);
+                    }
+                }
+                /*conSql.UpdateSql(sql2, bd);
 
                 ResultSet rs = null;
-                String sql = "Select* from " + tabla1 + " where estudiante.programa_id = " + idP + " and estudiante.semestre = " + idS;
+                String sql = "Select* from " + tabla1 + " where estudiante.programa_id = " + idP
+                        + " and estudiante.semestre = " + idS;
 
                 rs = conSql.CargarSql(sql, bd);
                 try {
                     while (rs.next()) {
                         if (request.getParameter(rs.getString(1)).equals("1")) {
-                            sql2 = "INSERT INTO `" + tabla + "` (`id`, `muestra_id`, `" + tabla1 + "_id`) VALUES (NULL, '" + idMuestra + "', '" + rs.getString(1) + "')";
+                            sql2 = "INSERT INTO `" + tabla + "` (`id`, `muestra_id`, `" + tabla1 + "_id`) "
+                                    + "VALUES (NULL, '" + idMuestra + "', '" + rs.getString(1) + "')";
                             conSql.UpdateSql(sql2, bd);
                         }
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(formController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                }*/
             } else if (request.getParameter(
                     "action").equals("selectorAsignarMuestraAI")) {
                 HttpSession session = request.getSession();
@@ -631,7 +724,11 @@ public class formController extends HttpServlet {
                 String sql2 = null;
 
                 String idP = request.getParameter("programas2");
-                String idS = request.getParameter("semestres2");
+                String idS = "";
+                if (idFuente.equals("1")) {
+                    idS = request.getParameter("semestres2");
+                }
+
                 int fil = 0;
 
                 try {
@@ -677,11 +774,66 @@ public class formController extends HttpServlet {
                         }
 
                     } else if (id == 2) {
-
                         tabla = "muestradocente";
                         tabla1 = "docente";
-                    }
+                        idP = request.getParameter("programas");
+                        if (!idP.equals("--")) {
+                            fil = 1;
+                            sql2 = "Select " + tabla1 + ".id, persona.id, persona.nombre , persona.apellido "
+                                    + "from " + tabla1 + " inner join persona on " + tabla1 + ".persona_id = persona.id "
+                                    + "where " + tabla1 + ".programa_id = " + idP;
+                            rs2 = conSql.CargarSql2(sql2, bd);
+                            if (rs2 != null) {
+                                session.setAttribute("muestras", rs2);
+                            }
 
+                            Result rs = null;
+                            String sql = "Select* from " + tabla + " where muestra_id = " + idMuestra;
+                            rs = conSql.CargarSql2(sql, bd);
+
+                            if (rs.getRowCount() != 0) {
+                                //  System.out.println("si hay asignacion de muestras");
+                                session.setAttribute("muestrasSeleccionadas", rs);
+                                session.setAttribute("aux_asignarM", 1);
+
+                            } else {
+                                //f  System.out.println("no hay asignacion de muestras!!!!!");
+                                session.setAttribute("aux_asignarM", 0);
+                            }
+                            session.setAttribute("aux_selectorAsignarM3", 1);
+                        }
+                        
+                    } else if (id == 5) {
+                        idP = request.getParameter("programas");
+                        tabla = "muestraegresado";
+                        tabla1 = "egresado";
+
+                        if (!idP.equals("--")) {
+                            fil = 1;
+                            sql2 = "Select " + tabla1 + ".id, persona.id, persona.nombre , persona.apellido "
+                                    + "from " + tabla1 + " inner join persona on " + tabla1 + ".persona_id = persona.id "
+                                    + "where " + tabla1 + ".programa_id = " + idP;
+                            rs2 = conSql.CargarSql2(sql2, bd);
+                            if (rs2 != null) {
+                                session.setAttribute("muestras", rs2);
+                            }
+
+                            Result rs = null;
+                            String sql = "Select* from " + tabla + " where muestra_id = " + idMuestra;
+                            rs = conSql.CargarSql2(sql, bd);
+
+                            if (rs.getRowCount() != 0) {
+                                //  System.out.println("si hay asignacion de muestras");
+                                session.setAttribute("muestrasSeleccionadas", rs);
+                                session.setAttribute("aux_asignarM", 1);
+
+                            } else {
+                                //f  System.out.println("no hay asignacion de muestras!!!!!");
+                                session.setAttribute("aux_asignarM", 0);
+                            }
+                            session.setAttribute("aux_selectorAsignarM3", 1);
+                        }
+                    }
                     if (fil == 0) {
                         session.setAttribute("aux_selectorAsignarM3", 0);
                         /*
@@ -805,7 +957,7 @@ public class formController extends HttpServlet {
                     String idP = request.getParameter("programas");
                     if (!idP.equals("--")) {
                         if (id == 3 || id == 4) {
-                            sql = "select persona.id, persona.nombre, persona.apellido, persona.password, "+tabla1+".cargo, "+tabla1+".ccosto  from " + tabla + " inner join " + tabla1 + " on " + tabla + "." + tabla1 + "_id = " + tabla1 + ".id inner join persona on " + tabla1 + ".persona_id = persona.id where " + tabla + ".muestra_id = " + idMuestra + " order by persona.id";
+                            sql = "select persona.id, persona.nombre, persona.apellido, persona.password, " + tabla1 + ".cargo, " + tabla1 + ".ccosto  from " + tabla + " inner join " + tabla1 + " on " + tabla + "." + tabla1 + "_id = " + tabla1 + ".id inner join persona on " + tabla1 + ".persona_id = persona.id where " + tabla + ".muestra_id = " + idMuestra + " order by persona.id";
                         } else {
                             sql = "select persona.id, persona.nombre, persona.apellido, persona.password from " + tabla + " inner join " + tabla1 + " on " + tabla + "." + tabla1 + "_id = " + tabla1 + ".id inner join persona on " + tabla1 + ".persona_id = persona.id where " + tabla + ".muestra_id = " + idMuestra + " order by persona.id";
                         }
@@ -1297,7 +1449,6 @@ public class formController extends HttpServlet {
                 }
             } else if (request.getParameter(
                     "action").equals("calcularMuestraAI")) {
-                System.out.println("jajaja XXX!!!!!!!!");
                 HttpSession session = request.getSession();
                 Proceso proceso = (Proceso) session.getAttribute("proceso");
 
