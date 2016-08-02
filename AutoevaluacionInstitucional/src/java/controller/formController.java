@@ -479,12 +479,51 @@ public class formController extends HttpServlet {
                 String sql2 = "";
                 //Estatico
                 if (id == 1) {
+                    Collection nuevos = new ArrayList();
+                    Collection viejos = new ArrayList();
+                    String EstudiantesViejos = "select estudiante.id from muestraestudiante\n"
+                            + "inner join estudiante on estudiante.id = muestraestudiante.estudiante_id\n"
+                            + "inner join programa on programa.id = estudiante.programa_id\n"
+                            + "where programa.id = '" + idP + "' and estudiante.semestre = '0"+idS+"'";
 
-                    tabla = "muestraestudiante";
-                    tabla1 = "estudiante";
-                    sql2 = "delete t1 from `" + tabla + "` t1 inner join estudiante on t1.estudiante_id = estudiante.id  where `muestra_id` = " + idMuestra + " and estudiante.programa_id = " + idP + " and estudiante.semestre = " + idS;
+                    ResultSet rsEsViejos = conSql.CargarSql(EstudiantesViejos, bd);
+                    try {
+                        while (rsEsViejos.next()) {
+                            viejos.add(rsEsViejos.getString(1));
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(formController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    String TodosLosEstudiantesDelProgramaYSemestre = "select estudiante.id from estudiante "
+                            + "where estudiante.programa_id = '" + idP + "' and estudiante.semestre = '0"+idS+"'";
+                    ResultSet rsTodosEst = conSql.CargarSql(TodosLosEstudiantesDelProgramaYSemestre, bd);
+                    try {
+                        while (rsTodosEst.next()) {
+                            if ("1".equals(request.getParameter(String.valueOf(rsTodosEst.getString(1))))) {
+                                nuevos.add(rsTodosEst.getString(1));
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        
+                        Logger.getLogger(formController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    Collection viejos2 = new ArrayList(viejos);
+                    viejos.removeAll(nuevos); // quedan solo las id de las personas que han sido eliminadas
+                    nuevos.removeAll(viejos2); //quedan solo las id de las personas que han sido agregadas
 
-                } else if (id == 2) {
+                    for (Object object : viejos) {
+                        String estudianteEliminarDeMuestra = "delete t1 from muestraestudiante t1 inner join estudiante on t1.estudiante_id = estudiante.id where estudiante.id = '"+object+"'";
+                        conSql.UpdateSql(estudianteEliminarDeMuestra, bd);
+                    }
+
+                    for (Object object : nuevos) {
+                        String estudianteAIngresar  = "INSERT INTO `muestraestudiante` (`id`, `muestra_id`, `estudiante_id`, `conglomerado`, `metodo` ) "
+                                + "VALUES (NULL, '" + idMuestra + "', '" + object + "', 'programa', 'normal')";
+                        conSql.UpdateSql(estudianteAIngresar, bd);
+                    }
+             } else if (id == 2) {
 
                     tabla = "muestradocente";
                     tabla1 = "docente";
@@ -740,8 +779,9 @@ public class formController extends HttpServlet {
 
                         if (!idP.equals("--") && !idS.equals("--")) {
                             fil = 1;
-                            sql2 = "Select " + tabla1 + ".id, persona.id, persona.nombre , persona.apellido from " + tabla1 + " inner join persona on " + tabla1 + ".persona_id = persona.id where " + tabla1 + ".programa_id = " + idP
-                                    + " and " + tabla1 + ".semestre = " + idS;
+                            sql2 = "Select " + tabla1 + ".id, persona.id, persona.nombre , persona.apellido"
+                                    + " from " + tabla1 + " inner join persona on " + tabla1 + ".persona_id = persona.id"
+                                    + " where " + tabla1 + ".programa_id = " + idP+ " and " + tabla1 + ".semestre = " + idS;
                             rs2 = conSql.CargarSql2(sql2, bd);
                             if (rs2 != null) {
                                 session.setAttribute("muestras", rs2);
