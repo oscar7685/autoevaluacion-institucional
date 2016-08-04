@@ -115,6 +115,7 @@ public class estadoProcesoAI implements Action {
                 + "INNER JOIN programa ON estudiante.programa_id = programa.id "
                 + "INNER JOIN facultad ON programa.facultad_id = facultad.id "
                 + "LEFT JOIN encabezado ON encabezado.persona_id = estudiante.persona_id "
+                + "and encabezado.fuente_id = estudiante.fuente_id "
                 + "WHERE muestraestudiante.muestra_id = " + idMuestra + " "
                 + "GROUP BY facultad.nombre, programa.nombre "
                 + "WITH ROLLUP";
@@ -130,6 +131,7 @@ public class estadoProcesoAI implements Action {
                 + "INNER JOIN programa ON docente.programa_id = programa.id "
                 + "INNER JOIN facultad ON programa.facultad_id = facultad.id "
                 + "LEFT JOIN encabezado ON encabezado.persona_id = docente.persona_id "
+                + "and encabezado.fuente_id = docente.fuente_id "
                 + "WHERE muestradocente.muestra_id = " + idMuestra + " "
                 + "GROUP BY facultad.nombre, programa.nombre "
                 + "WITH ROLLUP";
@@ -146,6 +148,7 @@ public class estadoProcesoAI implements Action {
                 + "INNER JOIN programa ON egresado.programa_id = programa.id "
                 + "INNER JOIN facultad ON programa.facultad_id = facultad.id "
                 + "LEFT JOIN encabezado ON encabezado.persona_id = egresado.persona_id "
+                + "and encabezado.fuente_id = egresado.fuente_id "
                 + "WHERE muestraegresado.muestra_id = " + idMuestra + " "
                 + "GROUP BY facultad.nombre, programa.nombre "
                 + "WITH ROLLUP";
@@ -162,6 +165,7 @@ public class estadoProcesoAI implements Action {
                 + "inner join descripcioncriterio on muestracriterio.descripcioncriterio_id=descripcioncriterio.id "
                 +"inner join criterio  on descripcioncriterio.criterio_id=criterio.id "
                 + "left join encabezado on encabezado.persona_id = administrativo.persona_id "
+                + "and encabezado.fuente_id = administrativo.fuente_id "
                 + "where muestraadministrativo.muestra_id=" + idMuestra + "  "
                 + "group by descripcioncriterio.nombre";
 
@@ -178,6 +182,7 @@ public class estadoProcesoAI implements Action {
                 + "inner join descripcioncriterio on muestracriterio.descripcioncriterio_id=descripcioncriterio.id "
                 +"inner join criterio  on descripcioncriterio.criterio_id=criterio.id "
                 + "left join encabezado on encabezado.persona_id = directorprograma.persona_id "
+                + "and encabezado.fuente_id = directorprograma.fuente_id "
                 + "where muestradirector.muestra_id=" + idMuestra + "  "
                 + "group by descripcioncriterio.nombre";
 
