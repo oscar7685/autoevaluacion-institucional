@@ -37,7 +37,6 @@ public class sqlController {
             sqlConnection conSql = new sqlConnection();
             conSql.conectarMySQL("institucional1");
             this.setConexion(conSql);
-
             return this.con;
 
         }
@@ -146,7 +145,7 @@ public class sqlController {
     public ResultSet CargarSql(String sql, String bd) {
 
         ResultSet rs = null;
-        
+
 
         try {
 
@@ -176,7 +175,6 @@ public class sqlController {
 
         ResultSet rs = null;
         Result result = null;
-        
 
         try {
 
@@ -209,10 +207,12 @@ public class sqlController {
 
         boolean aux = true;
         String id = "";
-        
+        Connection con = null;
+        sqlConnection sqlCon = new sqlConnection();
 
         try {
-            this.getConnection();
+            sqlCon.conectarMySQL(bd);
+            con = (Connection) sqlCon.getConnection();
             Statement st = (Statement) con.createStatement();
             // System.out.println("Se ha realizado con exito la conexion a MySQL");
 
@@ -224,12 +224,12 @@ public class sqlController {
         } catch (Error ex) {
             System.out.println(ex);
         } finally {
-            /*try {
+            try {
                 con.close();
-                //System.out.println("sqlConnection Cerrada con Exito...");
+                System.out.println("sqlConnection Cerrada con Exito...");
             } catch (SQLException ex) {
                 System.out.println(ex);
-            }*/
+            }
         }
         return aux;
     }

@@ -21,27 +21,21 @@ public class informeDetallePCaracteristicaAI implements Action {
         String idC = (String) request.getParameter("idC");
         sqlController conSql = new sqlController();
         Result detalleCaracteristica = null;
-        String sql2 = "SELECT caracteristica.id AS cid, caracteristica.nombre AS cno, indicador.id, indicador.nombre, \n" +
-"                format( \n" +
-"                     \n" +
-"                            (sum( case when respuesta='1'  THEN 1 ELSE 0 end)+\n" +
-"                                   sum( case when respuesta='2'  THEN 2 ELSE 0 end)+\n" +
-"                                   sum( case when respuesta='3'  THEN 3 ELSE 0 end)+\n" +
-"                                   sum( case when respuesta='4'  THEN 4 ELSE 0 end)+\n" +
-"                                   sum( case when respuesta='5'  THEN 5 ELSE 0 end))/\n" +
-"                                   (count(case when (respuesta ='1' or respuesta='2' or respuesta='3' or respuesta='4' or respuesta='5') THEN 1 else null end))\n" +
-"                           \n" +
-"                       ,1) as cumplimiento, \n" +
-"                factor.id, indicador.codigo, factor.nombre\n" +
-"                FROM Caracteristica\n" +
-"                INNER JOIN factor ON caracteristica.factor_id = factor.id\n" +
-"                INNER JOIN ponderacioncaracteristica ON ponderacioncaracteristica.caracteristica_id = caracteristica.id\n" +
-"                INNER JOIN indicador ON indicador.caracteristica_id = caracteristica.id\n" +
-"                LEFT JOIN numericadocumental ON numericadocumental.indicador_id = indicador.id\n" +
-"                LEFT JOIN pregunta ON pregunta.indicador_id = indicador.id\n" +
-"                LEFT JOIN resultadoevaluacion ON resultadoevaluacion.pregunta_id = pregunta.id\n" +
-"                where caracteristica.id ="+idC+" \n" +
-"                GROUP BY indicador.id";
+        String sql2 = "select c2.fid, c2.fnom, c2.cid, c2.cnom, c2.iid, c2.icod, c2.inom, format(AVG(c2.cump1),1) \n"
+                + "from (select c1.fid, c1.fnom, c1.cid, c1.cnom, c1.iid, c1.icod, c1.inom, c1.pid, format(AVG(c1.cumplimiento),1) as cump1 \n"
+                + "from (select factor.id as fid, factor.nombre as fnom, caracteristica.id as cid, caracteristica.nombre as cnom, indicador.id as iid, indicador.codigo as icod, indicador.nombre as inom, pregunta.id as pid, encuestahaspregunta.encuesta_id as eid, \n"
+                + "format(AVG(respuesta),1) as cumplimiento\n"
+                + "from factor	\n"
+                + "inner join caracteristica on caracteristica.factor_id = factor.id\n"
+                + "inner join indicador on indicador.caracteristica_id = caracteristica.id\n"
+                + "inner join instrumentohasindicador on \n"
+                + "(instrumentohasindicador.indicador_id = indicador.id AND instrumentohasindicador.instrumento_id='1')\n"
+                + "inner join pregunta on pregunta.indicador_id = indicador.id\n"
+                + "inner join encuestahaspregunta on (encuestahaspregunta.pregunta_id = pregunta.id or encuestahaspregunta.pregunta_id = pregunta.pregunta_padre)\n"
+                + "inner join resultadoevaluacion on resultadoevaluacion.pregunta_id = pregunta.id\n"
+                + "inner join encabezado on encabezado.id = resultadoevaluacion.encabezado_id "
+                + "where resultadoevaluacion.respuesta <> '0' and caracteristica.id= '"+idC+"' and encabezado.encuesta_id = encuestahaspregunta.encuesta_id \n"
+                + "GROUP BY pregunta.id, encuestahaspregunta.encuesta_id ) as c1 GROUP BY c1.pid) as c2 GROUP BY c2.iid";
         detalleCaracteristica = conSql.CargarSql2(sql2, bd);
         session.setAttribute("detalleCaracteristica", detalleCaracteristica);
 

@@ -17,9 +17,12 @@
                 polar: true,
                 type: 'line'
             },
+            credits: {
+            enabled: false
+            },
         
             title: {
-                text: 'Cumplimiento de los Factores de Calidad con relación al logro ideal',
+                text: 'Cumplimiento de los Factores de Calidad',
                 x: -80
             },
         
@@ -82,10 +85,10 @@
     <c:forEach items="${matrizFactores1.rowsByIndex}" var="aux2" varStatus="statusAux2">
         <c:choose>
             <c:when test="${matrizFactores1.getRowCount()!=statusAux2.index+1}">
-                <fmt:formatNumber type="number" maxFractionDigits="1" value="${aux2[3] * 20}"/>,            
+                <fmt:formatNumber type="number" maxFractionDigits="1" value="${aux2[2] * 20}"/>,            
             </c:when>
             <c:otherwise>
-                <fmt:formatNumber type="number" maxFractionDigits="1" value="${aux2[3] * 20}"/>,            
+                <fmt:formatNumber type="number" maxFractionDigits="1" value="${aux2[2] * 20}"/>,            
             </c:otherwise>
         </c:choose>  
     </c:forEach>
@@ -103,6 +106,9 @@
                 title: {
                     text: 'Matriz de calidad de factores'
                 },
+                    credits: {
+                        enabled: false
+                    },
 
                 xAxis: {
                     categories: [
@@ -174,44 +180,44 @@
         <c:choose>
             <c:when test="${matrizFactores1.getRowCount()!=status33.index+1}">
                 <c:choose>
-                    <c:when test="${factor2[3]==null}">
+                    <c:when test="${factor2[2]==null}">
                         { 
                             y:0
                         },
                     </c:when>
                     <c:otherwise>
                         <c:choose>
-                              <c:when test="${factor2[3]>=4.5}">
+                              <c:when test="${factor2[2]>=4.5}">
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#89A54E'
                                             },
                                                 
                     </c:when>
-                    <c:when test="${factor2[3]<4.5 && factor2[3]>=4.0}">
+                    <c:when test="${factor2[2]<4.5 && factor2[2]>=4.0}">
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#80699B'
                                             },
                                                 
                     </c:when>
-                    <c:when test="${factor2[3]<4.0 && factor2[3]>=3.0}">
+                    <c:when test="${factor2[2]<4.0 && factor2[2]>=3.0}">
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#3D96AE'
                                             },
                                                 
                     </c:when>
-                    <c:when test="${factor2[3]<3.0 && factor2[3]>=2.0}">
+                    <c:when test="${factor2[2]<3.0 && factor2[2]>=2.0}">
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#DB843D'
                                             },
                                                 
                     </c:when>
                     <c:otherwise>
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#AA4643'
                                             },
                     </c:otherwise>
@@ -227,44 +233,44 @@
             </c:when>
             <c:otherwise>
                     <c:choose>
-                        <c:when test="${factor2[3] == null}">
+                        <c:when test="${factor2[2] == null}">
                            { 
                                y:0
                            }
                         </c:when>
                         <c:otherwise>
                             <c:choose>
-                                  <c:when test="${factor2[3]>=4.5}">
+                                  <c:when test="${factor2[2]>=4.5}">
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#89A54E'
                                             }
                                                 
                     </c:when>
-                    <c:when test="${factor2[3]<4.5 && factor2[3]>=4.0}">
+                    <c:when test="${factor2[2]<4.5 && factor2[2]>=4.0}">
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#80699B'
                                             }
                                                 
                     </c:when>
-                    <c:when test="${factor2[3]<4.0 && factor2[3]>=3.0}">
+                    <c:when test="${factor2[2]<4.0 && factor2[2]>=3.0}">
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#3D96AE'
                                             }
                                                 
                     </c:when>
-                    <c:when test="${factor2[3]<3.0 && factor2[3]>=2.0}">
+                    <c:when test="${factor2[2]<3.0 && factor2[2]>=2.0}">
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#DB843D'
                                             }
                                                 
                     </c:when>
                     <c:otherwise>
                                             {
-                                                y: ${factor2[3]},
+                                                y: ${factor2[2]},
                                                 color: '#AA4643'
                                             }
                     </c:otherwise>
@@ -320,9 +326,7 @@
                         <thead>
                         <th>Id Factor</th>
                         <th>Factor</th>
-                        <th>Ponderacion Factor</th>
                         <th>Grado de Cumplimiento</th>
-                        <th>Evaluacion teniendo en cuenta ponderacion</th>
                         <th>Logro ideal</th>
                         <th>Relacion con el logro ideal</th>
                         </thead>
@@ -341,44 +345,13 @@
                                         <c:out value="${row[2]}"/>
                                     </td>
                                     <td>   
-                                        <c:out value="${row[3]}"/>
+                                        <c:out value="5"/>
                                     </td>
                                     <td>   
-                                        <fmt:formatNumber type="number" maxFractionDigits="1" value="${row[3] * row[2]}"/>
-                                    </td>
-                                    <td>   
-                                        <c:out value="${row[5]}"/>
-                                    </td>
-                                    <td>
-                                        <fmt:formatNumber type="number" maxFractionDigits="1" value="${row[3] * 20}"/>%
+                                        <fmt:formatNumber type="number" maxFractionDigits="1" value="${20 * row[2]}"/>%
                                     </td>
                                 </tr>
-                                <c:set var="ponderacion" value="${ponderacion + row[2]}" />
-                                <c:set var="cumplimiento" value="${(row[2] * row[3])+cumplimiento}" />
                             </c:forEach>
-                            <tr>
-                                <td>   
-                                    Totales:
-                                </td>
-                                <td>   
-
-                                </td>
-                                <td>   
-
-                                </td>
-                                <td>   
-                                    <fmt:formatNumber type="number"   maxFractionDigits="1" value="${cumplimiento/ponderacion}" />
-                                </td>
-                                <td>   
-
-                                </td>
-                                <td>   
-
-                                </td>
-                                <td>   
-                                    <fmt:formatNumber type="number"   maxFractionDigits="1" value="${(cumplimiento/ponderacion)*20}" />%
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <br/>          

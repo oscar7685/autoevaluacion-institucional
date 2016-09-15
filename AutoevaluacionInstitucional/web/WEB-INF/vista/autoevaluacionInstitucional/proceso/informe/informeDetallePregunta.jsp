@@ -41,10 +41,10 @@
                                 
                     },
                     title: {
-                        text: null
+                        text: '${encuesta[1]}'
                     },
                     subtitle: {
-                        text: '${encuesta[1]}'
+                        text: ''+finali
                     },
                     plotOptions: {
                         pie: {

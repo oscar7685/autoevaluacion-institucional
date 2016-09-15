@@ -20,7 +20,7 @@
     $(function () {
     var chart;
             var chart2 = new Array(${detalleIndicador.getRowCount()});
-            var indicad = "${detalleIndicador.getRowsByIndex()[0][1]}".split(" ");
+            var indicad = "${detalleIndicador.getRowsByIndex()[0][5]}".split(" ");
             var max2 = 70;
             var acom2 = 0;
             var finali2 = "";
@@ -36,173 +36,179 @@
             <c:forEach items="${detalleIndicador.rowsByIndex}" var="pregunta" varStatus="status" >
     chart2[${status.index}] = new Highcharts.Chart({
     chart: {
-    renderTo: 'container${pregunta[2]}',
+    renderTo: 'container${pregunta[6]}',
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false
 
     },
+            credits: {
+            enabled: false
+            },
             title: {
             text: null
             },
             subtitle: {
-            text: '${pregunta[15]} ${pregunta[3]}'
-            },
-            plotOptions: {
-            pie: {
-            allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                    enabled: true,
-                            color: '#000000',
-                            connectorColor: '#000000',
-                            formatter: function() {
-                            var igv = this.percentage;
-                                    igv = igv.toFixed(2);
-                                    return '<b>' + this.point.name + '</b>: ' + igv + ' %';
-                            }
-                    }
-            }
-            },
-            tooltip: {
-            formatter: function() {
-            return '' +
-                    this.point.name + ': ' + this.y + ' personas';
-            }
-            },
-            series: [{
-            type: 'pie',
-                    name: 'Personas',
-                    data: [
-                            ['0', ${pregunta[8]}],
-                            ['1', ${pregunta[9]}],
-                            ['2', ${pregunta[10]}],
-                            ['3', ${pregunta[11]}],
-                            ['4', ${pregunta[12]}],
-                    {
-                    name: '5',
-                            y: ${pregunta[13]},
-                            sliced: true,
-                            selected: true },
-                    ]
-            }]
+            text: '${pregunta[10]} ${pregunta[8]}'
+                        },
+                        plotOptions: {
+                        pie: {
+                        allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                enabled: true,
+                                        color: '#000000',
+                                        connectorColor: '#000000',
+                                        formatter: function() {
+                                        var igv = this.percentage;
+                                                igv = igv.toFixed(2);
+                                                return '<b>' + this.point.name + '</b>: ' + igv + ' %';
+                                        }
+                                }
+                        }
+                        },
+                        tooltip: {
+                        formatter: function() {
+                        return '' +
+                                this.point.name + ': ' + this.y + ' personas';
+                        }
+                        },
+                        series: [{
+                        type: 'pie',
+                                name: 'Personas',
+                                data: [
+                                        ['0', ${pregunta[12]}],
+                                        ['1', ${pregunta[13]}],
+                                        ['2', ${pregunta[14]}],
+                                        ['3', ${pregunta[15]}],
+                                        ['4', ${pregunta[16]}],
+                                {
+                                name: '5',
+                                        y: ${pregunta[17]},
+                                        sliced: true,
+                                        selected: true },
+                                ]
+                        }]
 
 
-    }); </c:forEach>
+                }); </c:forEach>
 
-    chart = new Highcharts.Chart({
-    chart: {
-    renderTo: 'grafica',
-            type: 'column',
-            margin: [ 50, 30, 100, 50]
-    },
-            title: {
-            text: "" + finali2 + ""
-            },
-            xAxis: {
-            categories: [
+                chart = new Highcharts.Chart({
+                chart: {
+                renderTo: 'grafica',
+                        type: 'column',
+                        margin: [ 50, 30, 100, 50]
+                },
+                        credits: {
+                        enabled: false
+                        },
+                        title: {
+                        text: "" + finali2 + ""
+                        },
+                        xAxis: {
+                        categories: [
             <c:forEach items="${detalleIndicador.rowsByIndex}" var="detalleI" varStatus="status">
                 <c:choose>
                     <c:when test="${detalleIndicador.getRowCount()!=status.index+1}">
-            '${detalleI[2]}-${detalleI[15]} ${detalleI[3]}', </c:when>
+                        '${detalleI[7]}-${detalleI[10]} ${detalleI[8]}', </c:when>
                     <c:otherwise>
-                        '${detalleI[2]}-${detalleI[15]} ${detalleI[3]}'
+                                    '${detalleI[7]}-${detalleI[10]} ${detalleI[8]}'
                     </c:otherwise>
                 </c:choose>
 
             </c:forEach>
-                                    ],
-                                            labels: {
-                                            formatter: function() {
-                                            var partes = this.value.split("-");
-                                                    return "Pregunta " + partes[0];
-                                            },
-                                                    rotation: - 45,
-                                                    align: 'right',
-                                                    style: {
-                                                    fontSize: '12px',
-                                                            fontFamily: 'Verdana, sans-serif'
-                                                    }
-                                            }
-                                    },
-                                    plotOptions: {
-                                    series: {
-                                    cursor: 'pointer',
-                                            point: {
-                                            events: {
-                                            click: function() {
-                                            var partes2 = this.category.split("-");
-                                                    var a = $("a[data='" + partes2[1] + "']");
-                                                    location = a.attr("href");
-                                            }
-                                            }
-                                            }
-                                    }
-                                    },
-                                    yAxis: {
-                                    min: 0,
-                                            max: 5,
-                                            title: {
-                                            text: 'Grado de cumplimiento'
-                                            }
-                                    },
-                                    legend: {
-                                    enabled: false
-                                    },
-                                    tooltip: {
-                                    formatter: function() {
-                                    var pregunta = this.x.split(" ");
-                                            var max = 50;
-                                            var acom = 0;
-                                            var finali = "";
-                                            for (var i = 0; i < pregunta.length; i++){
-                                    acom += pregunta[i].length;
-                                            if (acom < max){
-                                    finali += pregunta[i] + " ";
-                                    } else{
-                                    acom = 0;
-                                            finali += "</b><br/><b>" + pregunta[i] + " ";
-                                    }
+                                                ],
+                                                        labels: {
+                                                        formatter: function() {
+                                                        var partes = this.value.split("-");
+                                                                return "" + partes[0];
+                                                        },
+                                                                rotation: - 45,
+                                                                align: 'right',
+                                                                style: {
+                                                                fontSize: '12px',
+                                                                        fontFamily: 'Verdana, sans-serif'
+                                                                }
+                                                        }
+                                                },
+                                                plotOptions: {
+                                                series: {
+                                                cursor: 'pointer',
+                                                        point: {
+                                                        events: {
+                                                        click: function() {
+                                                        var partes2 = this.category.split("-");
+                                                                var a = $("a[data='" + partes2[1] + "']");
+                                                                location = a.attr("href");
+                                                        }
+                                                        }
+                                                        }
+                                                }
+                                                },
+                                                yAxis: {
+                                                min: 0,
+                                                        max: 5,
+                                                        title: {
+                                                        text: 'Grado de cumplimiento'
+                                                        }
+                                                },
+                                                legend: {
+                                                enabled: false
+                                                },
+                                                tooltip: {
+                                                formatter: function() {
+                                                var pregunta = this.x.split(" ");
+                                                        var max = 50;
+                                                        var acom = 0;
+                                                        var finali = "";
+                                                        for (var i = 0; i < pregunta.length; i++){
+                                                acom += pregunta[i].length;
+                                                        if (acom < max){
+                                                finali += pregunta[i] + " ";
+                                                } else{
+                                                acom = 0;
+                                                        finali += "</b><br/><b>" + pregunta[i] + " ";
+                                                }
 
-                                    }
+                                                }
 
-                                    return '<b>' + finali + '</b><br/>' +
-                                            'Cumplimiento: ' + Highcharts.numberFormat(this.y, 2) +
-                                            '';
-                                    }
-                                    },
-                                    series: [{
-                                    name: 'Preguntas',
-                                            data: [
+                                                return '<b>' + finali + '</b><br/>' +
+                                                        'Cumplimiento: ' + Highcharts.numberFormat(this.y, 2) +
+                                                        '';
+                                                }
+                                                },
+                                                series: [{
+                                                name: 'Preguntas',
+                                                        data: [
             <c:forEach items="${detalleIndicador.rowsByIndex}" var="detalleI2" varStatus="status33">
                 <c:choose>
                     <c:when test="${detalleIndicador.getRowCount()!=status33.index+1}">
                         <c:choose>
-                            <c:when test="${detalleI2[4]>=4.5}">
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#89A54E'
-                                            }, </c:when>
-                            <c:when test="${detalleI2[4]<4.5 && detalleI2[4]>=4.0}">
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#80699B'
-                                            }, </c:when>
-                            <c:when test="${detalleI2[4]<4.0 && detalleI2[4]>=3.0}">
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#3D96AE'
-                                            }, </c:when>
-                            <c:when test="${detalleI2[4]<3.0 && detalleI2[4]>=2.0}">
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#DB843D'
-                                            }, </c:when>
+                            <c:when test="${detalleI2[11]>=4.5}">
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#89A54E'
+                                                        }, </c:when>
+                            <c:when test="${detalleI2[11]<4.5 && detalleI2[11]>=4.0}">
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#80699B'
+                                                        }, </c:when>
+                            <c:when test="${detalleI2[11]<4.0 && detalleI2[11]>=3.0}">
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#3D96AE'
+                                                        }, </c:when>
+                            <c:when test="${detalleI2[11]<3.0 && detalleI2[11]>=2.0}">
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#DB843D'
+                                                        }, </c:when>
                             <c:otherwise>
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#AA4643'
-                                            }, </c:otherwise>
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#AA4643'
+                                                        }, </c:otherwise>
                         </c:choose>
 
 
@@ -213,39 +219,39 @@
                     </c:when>
                     <c:otherwise>
                         <c:choose>
-                            <c:when test="${detalleI2[4]>=4.5}">
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#89A54E'
-                                            }
+                            <c:when test="${detalleI2[11]>=4.5}">
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#89A54E'
+                                                        }
 
                             </c:when>
-                            <c:when test="${detalleI2[4]<4.5 && detalleI2[4]>=4.0}">
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#80699B'
-                                            }
+                            <c:when test="${detalleI2[11]<4.5 && detalleI2[11]>=4.0}">
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#80699B'
+                                                        }
 
                             </c:when>
-                            <c:when test="${detalleI2[4]<4.0 && detalleI2[4]>=3.0}">
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#3D96AE'
-                                            }
+                            <c:when test="${detalleI2[11]<4.0 && detalleI2[11]>=3.0}">
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#3D96AE'
+                                                        }
 
                             </c:when>
-                            <c:when test="${detalleI2[4]<3.0 && detalleI2[4]>=2.0}">
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#DB843D'
-                                            }
+                            <c:when test="${detalleI2[11]<3.0 && detalleI2[11]>=2.0}">
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#DB843D'
+                                                        }
 
                             </c:when>
                             <c:otherwise>
-                                            {
-                                            y: ${detalleI2[4]},
-                                                    color: '#AA4643'
-                                            }
+                                                        {
+                                                        y: ${detalleI2[11]},
+                                                                color: '#AA4643'
+                                                        }
                             </c:otherwise>
                         </c:choose>
 
@@ -259,25 +265,25 @@
             </c:forEach>
 
 
-                                            ],
-                                            dataLabels: {
-                                            enabled: true,
-                                                    rotation: - 90,
-                                                    color: '#FFFFFF',
-                                                    align: 'right',
-                                                    x: - 3,
-                                                    y: 10,
-                                                    formatter: function() {
-                                                    return this.y;
-                                                    },
-                                                    style: {
-                                                    fontSize: '13px',
-                                                            fontFamily: 'Verdana, sans-serif'
-                                                    }
-                                            }
-                                    }]
-                            });
-                            });
+                                                        ],
+                                                        dataLabels: {
+                                                        enabled: true,
+                                                                rotation: - 90,
+                                                                color: '#FFFFFF',
+                                                                align: 'right',
+                                                                x: - 3,
+                                                                y: 10,
+                                                                formatter: function() {
+                                                                return this.y;
+                                                                },
+                                                                style: {
+                                                                fontSize: '13px',
+                                                                        fontFamily: 'Verdana, sans-serif'
+                                                                }
+                                                        }
+                                                }]
+                                        });
+                                        });
         </c:when>
     </c:choose>
 </script>
@@ -285,16 +291,16 @@
     <div class="row">
         <div id="conte" class="span10">
             <div class="btn-group offset7">
-                <a class="btn" href="#detalleIndicador&${detalleIndicador.rowsByIndex[0][0]}">Todo</a>
+                <a class="btn" href="#detalleIndicador&${detalleIndicador.rowsByIndex[0][4]}">Todo</a>
                 <a class="btn active" style="cursor:default;">S&oacute;lo percepci&oacute;n</a>
             </div>
-            <legend>Indicador: ${detalleIndicador.rowsByIndex[0][1]}</legend>
+            <legend>Indicador: ${detalleIndicador.rowsByIndex[0][5]}</legend>
             <ul class="breadcrumb">
-                <li><a href="<%=request.getContextPath()%>/#informeMatrizPFactores">Matriz de Calidad de Factores</a> <span class="divider">/</span></li>
-                <li><a href="<%=request.getContextPath()%>/#informePMatriz">Matriz de Calidad de Características</a> <span class="divider">/</span></li>
-                <li><a class="tool" data-placement="top" rel="tooltip" data-original-title="${detalleCaracteristica.rowsByIndex[0][7]}" href="#detallePFactor&${detalleCaracteristica.rowsByIndex[0][5]}">Factor ${detalleCaracteristica.rowsByIndex[0][5]}</a> <span class="divider">/</span></li>
-                <li><a class="tool" data-placement="top" rel="tooltip" data-original-title="${detalleCaracteristica.rowsByIndex[0][1]}"  href="#detallePCaracteristica&${detalleCaracteristica.rowsByIndex[0][0]}" data="${detalleCaracteristica.rowsByIndex[0][1]}">Característica ${detalleCaracteristica.rowsByIndex[0][0]}</a><span class="divider">/</span></li>
-                <li class="active tool" data-placement="top" rel="tooltip" data-original-title="${detalleIndicador.rowsByIndex[0][1]}">Indicador ${detalleIndicador.rowsByIndex[0][7]}</li>
+                <li><a href="<%=request.getContextPath()%>/#informeMatrizFactoresP">Matriz de Calidad de Factores</a> <span class="divider">/</span></li>
+                <li><a href="<%=request.getContextPath()%>/#informeMatrizP">Matriz de Calidad de Características</a> <span class="divider">/</span></li>
+                <li><a class="tool" data-placement="top" rel="tooltip" data-original-title="${detalleIndicador.rowsByIndex[0][1]}" href="#detallePFactor&${detalleIndicador.rowsByIndex[0][0]}">Factor ${detalleIndicador.rowsByIndex[0][0]}</a> <span class="divider">/</span></li>
+                <li><a class="tool" data-placement="top" rel="tooltip" data-original-title="${detalleIndicador.rowsByIndex[0][3]}"  href="#detallePCaracteristica&${detalleIndicador.rowsByIndex[0][2]}">Característica ${detalleIndicador.rowsByIndex[0][2]}</a><span class="divider">/</span></li>
+                <li class="active tool" data-placement="top" rel="tooltip" data-original-title="${detalleIndicador.rowsByIndex[0][5]}">Indicador ${detalleIndicador.rowsByIndex[0][4]}</li>
             </ul>
             <br>
             <c:choose>
@@ -310,15 +316,15 @@
                             <c:forEach items="${detalleIndicador.rowsByIndex}" var="row" varStatus="iter">
                                 <tr>
                                     <td style="text-align: left">   
-                                        <c:out value="${row[6]}"/>
+                                        <c:out value="${row[7]}"/>
                                     </td>
                                     <td style="text-align: left">
                                         <c:choose>
-                                            <c:when test="${row[14]== 'item'}">
-                                                <a href="#detallePregunta&${row[2]}" data="${row[15]} ${row[3]}">${row[15]} ${row[3]}</a> 
+                                            <c:when test="${row[9]== 'item'}">
+                                                <a href="#detallePregunta&${row[6]}" >${row[10]} ${row[8]}</a> 
                                             </c:when>
                                             <c:otherwise>
-                                                <a href="#detallePregunta&${row[2]}" data="${row[3]}">${row[3]}</a> 
+                                                <a href="#detallePregunta&${row[6]}" >${row[8]}</a> 
                                             </c:otherwise>   
                                         </c:choose>
 
@@ -326,10 +332,10 @@
                                     <td>
                                         <div class="btn-group pull-right">
                                             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                                ${row[4]}
+                                                ${row[11]}
                                             </a>
                                             <ul class="dropdown-menu" style="padding-top: 0px;">
-                                                <div id="container${row[2]}" style="min-width: 850px; height: 400px; margin: 0 auto"></div>
+                                                <div id="container${row[6]}" style="min-width: 850px; height: 400px; margin: 0 auto"></div>
                                             </ul>
                                         </div>
                                     </td>
