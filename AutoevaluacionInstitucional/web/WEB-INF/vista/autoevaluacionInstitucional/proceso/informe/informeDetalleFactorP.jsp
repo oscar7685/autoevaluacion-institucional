@@ -216,10 +216,7 @@
                         <thead>
                         <th>C&oacute;digo</th>
                         <th>Caracter&iacute;stica</th>
-                        <th>Nivel de importacia</th>
-                        <th>Ponderaci&oacute;n caracter&iacute;stica</th>
                         <th>Grado de Cumplimiento</th>
-                        <th>Evaluaci&oacute;n teniendo en cuenta ponderaci&oacute;n</th>
                         <th>Logro ideal</th>
                         <th>Relaci&oacute;n con el logro ideal</th>
                         </thead>
@@ -235,22 +232,13 @@
                                                 <a href="#detallePCaracteristica&${row[3]}" data="${row[4]}">${row[4]}</a> 
                                             </td>
                                             <td>   
-                                                <c:out value="${row[5]}"/>
-                                            </td>
-                                            <td>   
-                                                <c:out value="${row[6]}"/>
-                                            </td>
-                                            <td>   
                                                 <c:out value="${row[7]}"/>
                                             </td>
                                             <td>   
-                                                <c:out value="${row[8]}"/>
+                                                5
                                             </td>
                                             <td>   
-                                                <c:out value="${row[9]}"/>
-                                            </td>
-                                            <td>   
-                                                <c:out value="${row[10]}%"/>
+                                                <c:out value="${row[7] * 20}%"/>
                                             </td>
                                         </tr>
                                     </c:when>
