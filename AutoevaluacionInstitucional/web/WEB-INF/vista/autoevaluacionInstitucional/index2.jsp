@@ -430,7 +430,7 @@
 
                         if (hash != "#detalleProceso" && hash != "#listarPonderacionFactor" && hash != "#listarPonderacionCaracteristica"
                                 && hash != "#listarProcesos" && hash != "#listarEvaluarDoc" && hash != "#listarEvaluarNum" && hash.indexOf("#detalleFactor") == -1 && hash.indexOf("#detallePFactor") == -1 && hash.indexOf("#detallePCaracteristica") == -1
-                                && hash.indexOf("#detalleCaracteristica") == -1 && hash.indexOf("#detalleIndicador") == -1 && hash.indexOf("#detallePIndicador") == -1 && hash != "#CerrarSesion" && hash.indexOf("#detallePregunta") == -1 && hash.indexOf("#verEncuesta") == -1)
+                                && hash.indexOf("#detalleCaracteristica") == -1 && hash.indexOf("#detalleIndicador") == -1 && hash.indexOf("#detallePIndicador") == -1 && hash != "#CerrarSesion" && hash.indexOf("#detallePregunta") == -1 && hash.indexOf("#verEncuesta") == -1 && hash.indexOf("#detalleDPregunta") == -1)
                         { //si no es ---
 
                             if (middleLayout) {
@@ -1053,6 +1053,26 @@
 
                                 url4 = url4.replace('#detallePregunta', "ControllerAI?action=detallePreguntaAI");
                                 url4 = url4.replace('&', "&idP=");
+                                $("div.ui-layout-center").empty();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: url4,
+                                    success: function(data)
+                                    {
+                                        $(".contenido").append(data);
+                                        setTimeout(function() {
+                                            $(".page_loading").hide();
+                                        }, 200);
+
+                                    } //fin success
+                                }); //fin $.ajax
+
+                            }
+                            else if (hash.indexOf("#detalleDPregunta") != -1) {
+                                console.log("pasamos por aqui!!!")
+                                var url4 = "<%=request.getContextPath()%>/" + hash;
+
+                                url4 = url4.replace('#detalleDPregunta', "ControllerAI?action=detalleDPreguntaAI");
                                 $("div.ui-layout-center").empty();
                                 $.ajax({
                                     type: 'POST',

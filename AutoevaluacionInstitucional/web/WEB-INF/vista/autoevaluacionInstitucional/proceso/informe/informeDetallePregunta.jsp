@@ -305,7 +305,15 @@
                                     <c:choose>
                                         <c:when test="${iter.index == 0}">
                                             <td style="text-align: left">   
-                                                <c:out value="${row[1]}"/>
+                                                <c:choose>
+                                                    <c:when test="${row[4] == 1 ||  row[4] == 3 || row[4] == 2 }">
+                                                        <a href="#detalleDPregunta&idP=${row[12]}&idE=${row[4]}"><c:out value="${row[1]}"/></a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:out value="${row[1]}"/>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                
                                             </td>
                                             <td>   
                                                 <div class="btn-group pull-right">
@@ -321,7 +329,14 @@
                                         </c:when>
                                         <c:otherwise>
                                             <td style="text-align: left">   
-                                                <c:out value="${row[1]}"/>
+                                                <c:choose>
+                                                    <c:when test="${row[4] == 1 ||  row[4] == 3 || row[4] == 2 }">
+                                                        <a href="#detalleDPregunta&idP=${row[12]}&idE=${row[4]}"><c:out value="${row[1]}"/></a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <c:out value="${row[1]}"/>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </td>
                                             <td>   
                                                 <div class="btn-group pull-right">
