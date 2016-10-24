@@ -1081,7 +1081,7 @@ public class formController extends HttpServlet {
                             conSql.UpdateSql(sql2, "autoevaluacion");
                         }
                         if (id == 2) {
-                            sql2 = "insert into " + tabla1 + " values (NULL, '--', '" + usuario + "', '" + id + "', '" 
+                            sql2 = "insert into " + tabla1 + " values (NULL, '--', '" + usuario + "', '" + id + "', '"
                                     + programa + "', 'ccosto')";
                             conSql.UpdateSql(sql2, bd);
                             conSql.UpdateSql(sql2, "autoevaluacion");
@@ -2185,88 +2185,59 @@ public class formController extends HttpServlet {
                 } else {
                     instrumentoId = "2";
                 }
+                String indicador = request.getParameter("indicador");
+                String columna = request.getParameter("columna");
+                String valor = request.getParameter("valor");
 
-                if ((session.getAttribute("auxInfoNumerica") != null && session.getAttribute("auxInfoNumerica").equals(0) && instrumentoId.equals("3")) || (session.getAttribute("auxInfoDocumental") != null && session.getAttribute("auxInfoDocumental").equals(0) && instrumentoId.equals("2"))) {
-
-                    rs = conSql.CargarSql("Select* from indicador inner join instrumentohasindicador on indicador.id = instrumentohasindicador.indicador_id where instrumentohasindicador.instrumento_id = '" + instrumentoId + "' order by indicador.id", bd);
-                    try {
-                        while (rs.next()) {
-                            int i = Integer.parseInt(rs.getString(1));
-                            String id = request.getParameter("idIndicadorDoc" + i);
-                            String nombreDoc = request.getParameter("nombreDocumento" + i);
-                            String responsable = request.getParameter("responsableDocumento" + i);
-                            String medio = request.getParameter("medioDocumento" + i);
-                            String lugar = request.getParameter("lugarDocumento" + i);
-                            String evaluacion = request.getParameter("evaluacionDoc" + i);
-                            String accion = request.getParameter("accionDocumento" + i);
-
-                            if (!id.equals("") && !nombreDoc.equals("")
-                                    && !responsable.equals("") && !medio.equals("")
-                                    && !lugar.equals("") && !evaluacion.equals("") && !accion.equals("")) {
-                                conSql.UpdateSql("INSERT INTO `numericadocumental` (`id` ,`documento` ,`responsable` ,`medio` ,`lugar` ,`evaluacion` ,`accion` ,`proceso_id` ,`instrumento_id` ,`indicador_id`) "
-                                        + "VALUES (NULL , '" + nombreDoc + "', '" + responsable + "', '" + medio + "', '" + lugar + "', '" + evaluacion + "', '" + accion + "', '" + idProceso + "', '" + instrumentoId + "', '" + id + "')", bd);
-
-                            }
-
+                rs = conSql.CargarSql("Select count(*) from indicador \n"
+                        + "inner join instrumentohasindicador on indicador.id = instrumentohasindicador.indicador_id \n"
+                        + "inner join numericadocumental on (numericadocumental.indicador_id = indicador.id and numericadocumental.instrumento_id = instrumentohasindicador.instrumento_id)\n"
+                        + "where instrumentohasindicador.instrumento_id = '" + instrumentoId + "' and indicador.id = '" + indicador + "'", bd);
+                int existe = 0;
+                while (rs.next()) {
+                    existe = rs.getInt(1);
+                }
+                if (existe > 0) {
+                    rs = conSql.CargarSql("Select numericadocumental.* from indicador \n"
+                            + "inner join instrumentohasindicador on indicador.id = instrumentohasindicador.indicador_id \n"
+                            + "inner join numericadocumental on (numericadocumental.indicador_id = indicador.id and numericadocumental.instrumento_id = instrumentohasindicador.instrumento_id)\n"
+                            + "where instrumentohasindicador.instrumento_id = '" + instrumentoId + "' and indicador.id = '" + indicador + "'", bd);
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        if (columna.equals("1")) {
+                            conSql.UpdateSql("UPDATE `numericadocumental` SET `documento`='" + valor + "' WHERE (`id`='" + id + "')", bd);
+                        } else if (columna.equals("2")) {
+                            conSql.UpdateSql("UPDATE `numericadocumental` SET `responsable`='" + valor + "' WHERE (`id`='" + id + "')", bd);
+                        } else if (columna.equals("3")) {
+                            conSql.UpdateSql("UPDATE `numericadocumental` SET `medio`='" + valor + "' WHERE (`id`='" + id + "')", bd);
+                        } else if (columna.equals("4")) {
+                            conSql.UpdateSql("UPDATE `numericadocumental` SET `lugar`='" + valor + "' WHERE (`id`='" + id + "')", bd);
+                        } else if (columna.equals("5")) {
+                            conSql.UpdateSql("UPDATE `numericadocumental` SET `evaluacion`='" + valor + "' WHERE (`id`='" + id + "')", bd);
+                        } else if (columna.equals("6")) {
+                            conSql.UpdateSql("UPDATE `numericadocumental` SET `accion`='" + valor + "' WHERE (`id`='" + id + "')", bd);
                         }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(formController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    if (instrumentoId.equals("3")) {
-                        session.setAttribute("auxInfoNumerica", 1);
-                    } else {
-                        session.setAttribute("auxInfoDocumental", 1);
-                    }
-
+                    System.out.println("Todo perfecto!!");
                 } else {
-
-                    ResultSet rs2 = conSql.CargarSql("Select* from indicador inner join instrumentohasindicador on indicador.id = instrumentohasindicador.indicador_id where instrumentohasindicador.instrumento_id = '" + instrumentoId + "' order by indicador.id", bd);
-                    while (rs2.next()) {
-                        int i = Integer.parseInt(rs2.getString(1));
-                        String id = request.getParameter("idIndicadorDoc" + i);
-                        String nombreDoc = request.getParameter("nombreDocumento" + i);
-                        String responsable = request.getParameter("responsableDocumento" + i);
-                        String medio = request.getParameter("medioDocumento" + i);
-                        String lugar = request.getParameter("lugarDocumento" + i);
-                        String evaluacion = request.getParameter("evaluacionDoc" + i);
-                        String accion = request.getParameter("accionDocumento" + i);
-                        String idNumericaDoc = request.getParameter("idnumericaDoc" + i);
-                        String cambio = request.getParameter("InfoCambio" + i);
-
-                        if (cambio.equals("0")) {//si ningun campo fue modificado
-                        } else {
-                            if (idNumericaDoc != null && !idNumericaDoc.equals("")) {//si existia
-                                if (!nombreDoc.equals("") && !responsable.equals("") && !medio.equals("")
-                                        && !lugar.equals("") && !evaluacion.equals("") && !accion.equals("") && cambio.equals("1")) {//si tiene todos los campos
-
-                                    String sql = "UPDATE numericadocumental "
-                                            + "SET `documento` = '" + nombreDoc + "' ,"
-                                            + "`responsable` = '" + responsable + "' ,"
-                                            + "`medio` = '" + medio + "' ,"
-                                            + "`lugar` = '" + lugar + "' ,"
-                                            + "`lugar` = '" + lugar + "' ,"
-                                            + "`evaluacion` = '" + evaluacion + "' ,"
-                                            + "`accion` = '" + accion + "' "
-                                            + "where numericadocumental.id = '" + idNumericaDoc + "'";
-                                    conSql.UpdateSql(sql, bd);
-
-                                } else {
-                                    String sql = "DELETE  from numericadocumental where numericadocumental.id = '" + idNumericaDoc + "'";
-                                    conSql.UpdateSql(sql, bd);
-
-                                }
-                            } else {
-                                if (!nombreDoc.equals("") && !responsable.equals("") && !medio.equals("")
-                                        && !lugar.equals("") && !evaluacion.equals("") && !accion.equals("") && cambio.equals("1")) {//si tiene todos los campos
-
-                                    conSql.UpdateSql("INSERT INTO `numericadocumental` (`id` ,`documento` ,`responsable` ,`medio` ,`lugar` ,`evaluacion` ,`accion` ,`proceso_id` ,`instrumento_id` ,`indicador_id`) "
-                                            + "VALUES (NULL , '" + nombreDoc + "', '" + responsable + "', '" + medio + "', '" + lugar + "', '" + evaluacion + "', '" + accion + "', '" + idProceso + "', '" + instrumentoId + "', '" + id + "')", bd);
-
-                                }
-
-                            }
-                        }
-
+                    if (columna.equals("1")) {
+                        conSql.UpdateSql("INSERT INTO `numericadocumental` (`id` ,`documento` ,`responsable` ,`medio` ,`lugar` ,`evaluacion` ,`accion` ,`proceso_id` ,`instrumento_id` ,`indicador_id`) "
+                                + "VALUES (NULL , '" + valor + "', '', '', '', '', '', '" + idProceso + "', '" + instrumentoId + "', '" + indicador + "')", bd);
+                    } else if (columna.equals("2")) {
+                        conSql.UpdateSql("INSERT INTO `numericadocumental` (`id` ,`documento` ,`responsable` ,`medio` ,`lugar` ,`evaluacion` ,`accion` ,`proceso_id` ,`instrumento_id` ,`indicador_id`) "
+                                + "VALUES (NULL , '', '" + valor + "', '', '', '', '', '" + idProceso + "', '" + instrumentoId + "', '" + indicador + "')", bd);
+                    } else if (columna.equals("3")) {
+                        conSql.UpdateSql("INSERT INTO `numericadocumental` (`id` ,`documento` ,`responsable` ,`medio` ,`lugar` ,`evaluacion` ,`accion` ,`proceso_id` ,`instrumento_id` ,`indicador_id`) "
+                                + "VALUES (NULL , '', '', '" + valor + "', '', '', '', '" + idProceso + "', '" + instrumentoId + "', '" + indicador + "')", bd);
+                    } else if (columna.equals("4")) {
+                        conSql.UpdateSql("INSERT INTO `numericadocumental` (`id` ,`documento` ,`responsable` ,`medio` ,`lugar` ,`evaluacion` ,`accion` ,`proceso_id` ,`instrumento_id` ,`indicador_id`) "
+                                + "VALUES (NULL , '', '', '', '" + valor + "', '', '', '" + idProceso + "', '" + instrumentoId + "', '" + indicador + "')", bd);
+                    } else if (columna.equals("5")) {
+                        conSql.UpdateSql("INSERT INTO `numericadocumental` (`id` ,`documento` ,`responsable` ,`medio` ,`lugar` ,`evaluacion` ,`accion` ,`proceso_id` ,`instrumento_id` ,`indicador_id`) "
+                                + "VALUES (NULL , '', '', '', '', '" + valor + "', '', '" + idProceso + "', '" + instrumentoId + "', '" + indicador + "')", bd);
+                    } else if (columna.equals("6")) {
+                        conSql.UpdateSql("INSERT INTO `numericadocumental` (`id` ,`documento` ,`responsable` ,`medio` ,`lugar` ,`evaluacion` ,`accion` ,`proceso_id` ,`instrumento_id` ,`indicador_id`) "
+                                + "VALUES (NULL , '', '', '', '', '', '" + valor + "', '" + idProceso + "', '" + instrumentoId + "', '" + indicador + "')", bd);
                     }
                 }
             }

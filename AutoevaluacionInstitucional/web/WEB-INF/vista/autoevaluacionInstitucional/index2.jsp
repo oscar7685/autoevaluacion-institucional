@@ -166,16 +166,10 @@
                     location = $(this).attr("href");
                 })
                 $('a#infoDocumental').click(function() {
-                    setTimeout(function() {
-                        $("#west-closer").trigger("click");
-                    }, 500);
-
+                    $("#west-closer").trigger("click");
                 });
                 $('a#infoNumerica').click(function() {
-                    setTimeout(function() {
-                        $("#west-closer").trigger("click");
-                    }, 500);
-
+                    $("#west-closer").trigger("click");
                 });
                 $(".ui-layout-center").scroll(function() {
                     // If has not activated (has no attribute "data-top"
@@ -215,39 +209,39 @@
                 myLayout = $('body').layout({
                     //	enable showOverflow on west-pane so CSS popups will overlap north pane
                     west__size: 270
-                            , center__paneSelector: ".ui-layout-center"
-                            , north__paneClass: "ui-layout-pane2"
-                            , closable: true	// pane can open & close
+                    , center__paneSelector: ".ui-layout-center"
+                    , north__paneClass: "ui-layout-pane2"
+                    , closable: true	// pane can open & close
 
                             //	reference only - these options are NOT required because 'true' is the default
 
-                            , resizable: false	// when open, pane can be resized 
-                            , slidable: false	// when closed, pane can 'slide' open over other panes - closes on mouse-out
-                            , north__size: 41
-                            , north__maxSize: 41
-                            , north__slidable: false	// OVERRIDE the pane-default of 'slidable=true'
-                            , north__spacing_open: 0		// no resizer-bar when open (zero height)
-                            , north__closable: false
-                            , south__closable: false
-                            , south__resizable: false	// OVERRIDE the pane-default of 'resizable=true'
-                            , south__spacing_open: 0		// no resizer-bar when open (zero height)
-                            , west__spacing_open: 0
-                            , west__spacing_closed: 20
-                            , west__togglerLength_closed: 75
-                            , west__togglerAlign_closed: "top"
-                            , west__togglerContent_closed: "<button id='west-open' class='close' style='float:left;margin-left:4px;opacity:1;margin-top:-10px;'>&raquo;</button>"
-                            , west__togglerTip_closed: "Mostrar menú"
-                            , west__togglerTip_open: "Ocultar menú"
-                            , west__onclose_end: function() {
+                    , resizable: false	// when open, pane can be resized 
+                    , slidable: false	// when closed, pane can 'slide' open over other panes - closes on mouse-out
+                    , north__size: 41
+                    , north__maxSize: 41
+                    , north__slidable: false	// OVERRIDE the pane-default of 'slidable=true'
+                    , north__spacing_open: 0		// no resizer-bar when open (zero height)
+                    , north__closable: false
+                    , south__closable: false
+                    , south__resizable: false	// OVERRIDE the pane-default of 'resizable=true'
+                    , south__spacing_open: 0		// no resizer-bar when open (zero height)
+                    , west__spacing_open: 0
+                    , west__spacing_closed: 20
+                    , west__togglerLength_closed: 75
+                    , west__togglerAlign_closed: "top"
+                    , west__togglerContent_closed: "<button id='west-open' class='close' style='float:left;margin-left:4px;opacity:1;margin-top:-10px;'>&raquo;</button>"
+                    , west__togglerTip_closed: "Mostrar menú"
+                    , west__togglerTip_open: "Ocultar menú"
+                    , west__onclose_end: function() {
                         $("#conte").removeClass("span10").addClass("span12")
                     }
                     , west__onopen_end: function() {
                         $("#conte").removeClass("span12").addClass("span10")
                     }
                     , south__paneClass: "ui-layout-pane"
-                            , west__togglerContent_open: ""
-                            , west__minSize: 200
-                            , west__maxSize: 350
+                    , west__togglerContent_open: ""
+                    , west__minSize: 200
+                    , west__maxSize: 350
 
 
                 });
@@ -266,861 +260,780 @@
         <script type="text/javascript">
 
             $(function()
-            {
+                    {
 
-                $("div.ui-layout-center").ajaxStart(function() {
+                    $("div.ui-layout-center").ajaxStart(function() {
                     $("div.ui-layout-center").append("<div class='contenido'></div>");
-                    $("div.ui-layout-center").append("<div class='page_loading'>"
+                            $("div.ui-layout-center").append("<div class='page_loading'>"
                             + "<span>Cargando</span>"
                             + "<img src='css/images/loading.gif' style='margin-left:6px;'>"
                             + "</div>");
-
-                });
-                //CERRAR PROCESO
-                $('#myModalCP2b1').click(function() {
+                            });
+//CERRAR PROCESO
+                            $('#myModalCP2b1').click(function() {
 
                     $("div.ui-layout-center").empty();
-                    $.ajax({
-                        type: "POST",
-                        url: "<%=request.getContextPath()%>/formController?action=CerrarProcesoAI",
-                        success: function(data)
-                        {
                             $.ajax({
-                                type: 'POST',
-                                url: "<%=request.getContextPath()%>/ControllerAI?action=validar2",
-                                success: function(data) {
-                                    if (data == 1) {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "<%=request.getContextPath()%>/ControllerAI?action=menuAI",
+                            type: "POST",
+                                    url: "<%=request.getContextPath()%>/formController?action=CerrarProcesoAI",
+                                    success: function(data)                             {
+                                    $.ajax({
+                                    type: 'POST',
+                                            url: "<%=request.getContextPath()%>/ControllerAI?action=validar2",
                                             success: function(data) {
-                                                $("#menu2").empty();
-                                                $("#menu2").html(data);
-                                                setTimeout(function() {
+                                            if (data == 1) {
+                                            $.ajax({
+                                            type: 'POST',
+                                                    url: "<%=request.getContextPath()%>/ControllerAI?action=menuAI",
+                                                    success: function(data) {
+                                                    $("#menu2").empty();
+                                                            $("#menu2").html(data);
+                                                            setTimeout(function() {
+                                                            location = "<%=request.getContextPath()%>/#detalleProceso";
+                                                            }, 200);
+                                                    }
+                                            });
+                                            } else {
+                                            $('#myModalIP3').modal();
+                                                    setTimeout(function() {
                                                     location = "<%=request.getContextPath()%>/#detalleProceso";
-                                                }, 200);
+                                                    }, 200);
                                             }
-                                        });
-                                    } else {
-                                        $('#myModalIP3').modal();
-                                        setTimeout(function() {
-                                            location = "<%=request.getContextPath()%>/#detalleProceso";
-                                        }, 200);
-                                    }
-                                }
-                            })
-                        } //fin success
-                    }); //fin del $.ajax*/
-                });
-
-                $('#myModalCP2b2').click(function() {
+                                            }
+                                    })
+                                    } //fin success
+                            }); //fin del $.ajax*/
+                    });
+                            $('#myModalCP2b2').click(function() {
                     location = "<%=request.getContextPath()%>/#detalleProceso";
-                });
-
-
-                $('.about').click(function() {
+                    });
+                            $('.about').click(function() {
 
                     $('#myModalAbout').modal();
-                });
-
-
-                //INICIAR PROCESO
-                $('#myModalIP2b1').click(function() {
+                            });
+                            //INICIAR PROCESO
+                            $('#myModalIP2b1').click(function() {
 
                     $("div.ui-layout-center").empty();
-                    $.ajax({
-                        type: "POST",
-                        url: "<%=request.getContextPath()%>/formController?action=IniciarProcesoAI",
-                        success: function()
-                        {
                             $.ajax({
-                                type: 'POST',
-                                url: "<%=request.getContextPath()%>/ControllerAI?action=validar1",
-                                success: function(data) {
-                                    if (data == 1) {
-                                        $.ajax({
+                                    type: "POST",
+                                            url: "<%=request.getContextPath()%>/formController?action=IniciarProcesoAI",
+                                            success: function()                                             {
+                                            $.ajax({
                                             type: 'POST',
-                                            url: "<%=request.getContextPath()%>/ControllerAI?action=menuAI",
-                                            success: function(data) {
-                                                $("#menu2").empty();
-                                                $("#menu2").html(data);
-                                                setTimeout(function() {
-                                                    location = "<%=request.getContextPath()%>/#detalleProceso";
-                                                }, 200);
-                                            }
-                                        });
-                                    } else {
-                                        $('#myModalIP').modal();
-                                        setTimeout(function() {
+                                                    url: "<%=request.getContextPath()%>/ControllerAI?action=validar1",
+                                                    success: function(data) {
+                                                            if (data == 1) {
+                                                            $.ajax({
+                                                                    type: 'POST',
+                                                                    url: "<%=request.getContextPath()%>/ControllerAI?action=menuAI",
+                                                                            success: function(data) {
+                                                                            $("#menu2").empty();
+                                                                    $("#menu2").html(data);
+                                                                    setTimeout(function() {
                                             location = "<%=request.getContextPath()%>/#detalleProceso";
-                                        }, 200);
+                                    }, 200);
                                     }
-                                }
-                            })
-                        } //fin success
-                    }); //fin del $.ajax    });
-                });
+                                            });
+                                            } else {
+                                            $('#myModalIP').modal();
+                                            setTimeout(function() {
+                                                    location = "<%=request.getContextPath()%>/#detalleProceso";
+                                                            }, 200);
+                                                            }
+                                                                    }
+                                            })
+                                            } //fin  success
+                                                                    }); //fin del $.ajax    });
+                                                                    }); $('#myModalIP2b 2').click(function() {
+                                                                            $("ul.nav-list li:eq(2) a").trigger("click");
+                    });
+                                                                            $(window).hashchange(function() {
 
-                $('#myModalIP2b2').click(function() {
-                    $("ul.nav-list li:eq(2) a").trigger("click");
-                });
+                                                                            var hash = location.hash;
+                                                                                    if (hash.indexOf("PonderacionCaracteristicas") != - 1 || hash.indexOf("PonderacionFactores") != - 1
+                                                                            || hash == "" || hash.indexOf("error") != - 1 || hash.indexOf("collapse") != - 1 || hash == "#estudiantes"
+                                                            || hash == "#docentes" || hash == "#egresados" || hash == "#administrativos" || hash == "#directivos" || hash == "#empleadores" || hash == "#gubernamentales") {
 
 
+                                                    } else {//else principal
 
-                $(window).hashchange(function() {
-
-                    var hash = location.hash;
-
-                    if (hash.indexOf("PonderacionCaracteristicas") != -1 || hash.indexOf("PonderacionFactores") != -1
-                            || hash == "" || hash.indexOf("error") != -1 || hash.indexOf("collapse") != -1 || hash == "#estudiantes"
-                            || hash == "#docentes" || hash == "#egresados" || hash == "#administrativos" || hash == "#directivos" || hash == "#empleadores" || hash == "#gubernamentales") {
-
-
-                    } else {//else principal
-
-                        if (hash == "#CerrarSesion") {//CerrarSesion
-                            $.ajax({
-                                type: "POST",
-                                url: "<%=request.getContextPath()%>/ControllerAI?action=CerrarSesion",
-                                beforeSend: function() {
-                                    $("div.ui-layout-center").hide();
-                                },
-                                success: function()
-                                {
-                                    location = "<%=request.getContextPath()%>/";
-                                }
-                            });
-
-                        }//fin CerrarSesion
-                        if (hash == "#inicio") {//inicio
-                            $("div.ui-layout-center").empty();
+                                                    if (hash == "#CerrarSesion") {//CerrarSesion
+                                    $.ajax({
+                    type: "POST",
+                                            url: "<%=request.getContextPath()%>/ControllerAI?action=CerrarSesion",
+                                    beforeSend: function() {
+                                            $("div.ui-layout-center").hide();
+                                    },
+                                                    success: function()                             { location = "<%=request.getContextPath()%>/";                             }
+                    });
+                                                    }//fin CerrarSesion
+                    if (hash == "#inicio") {//inicio
+                    $("div.ui-layout-center").empty();
                             $("div.ui-layout-center").append(
                                     "<div id='conte' class='span10' style='text-align: justify'>"
-                                    + "<div class='hero-unit'>"
-                                    + "<h1>¡Autoevaluaci&oacute;n Institucional!</h1>"
-                                    + "<p style='font-size: 18px; font-weight: 200; line-height: 27px;'>El Consejo Acad&eacute;mico aprob&oacute; el Modelo de Autoevaluaci&oacute;n con fines de Acreditaci&oacute;n Institucional de la Universidad de Cartagena; instrumento de gesti&oacute;n que permite la revisi&oacute;n sistem&aacute;tica de los procesos acad&eacute;micos y administrativos para  la elaboraci&oacute;n y puesta en marcha de planes de mejoramiento y de mantenimiento que den respuesta a su pol&iacute;tica de calidad.</p>"
-                                    + "<p><a class='btn btn-primary btn-large' target='_blank' href='http://autoevaluacioninstitucional.unicartagena.edu.co/index.php/autoevaluacion-institucional'>Leer M&aacute;s »</a></p>"
-                                    + "</div>"
-                                    + "<div class='row-fluid'>"
-                                    + "<div class='span4'>"
-                                    + "<h2>Definici&oacute;n</h2>"
-                                    + "<p>Para la Institución, la autoevaluación es un instrumento de gestión, que le permite una revisión sistemática de los procesos académicos y administrativos. De esta manera, se propone optimizar y abrir espacios para la elaboración y puesta en marcha de planes de mejoramiento y de mantenimiento que, por supuesto, den respuesta a su política de calidad.</p>"
-                                    + "<p><a target='_blank' href='http://autoevaluacioninstitucional.unicartagena.edu.co/index.php/autoevaluacion-institucional/definicion' class='btn'>Ver detalles »</a></p>"
-                                    + "</div><!--/span-->"
-                                    + "<div class='span4'>"
-                                    + "<h2>Modelo</h2>"
-                                    + "<p>El Modelo de Autoevaluación de la Universidad de Cartagena se diseñó siguiendo los lineamientos establecidos por el CNA y  fue articulado a la política de mejoramiento de la calidad de la Institución. De acuerdo a ello, lo constituyen un conjunto de factores, características e indicadores que sirven como instrumento analítico en la valoración de los diversos elementos que intervienen en la operación comprensiva de la calidad de la Institución.</p>"
-                                    + "<p><a href='http://autoevaluacioninstitucional.unicartagena.edu.co/images/pdf/modelo_de_autoevaluacion_institucional_.pdf'>Descargar Modelo de Autoevaluación Institucional</a></p></p>"
-                                    + "<p><a target='_blank' href='http://autoevaluacioninstitucional.unicartagena.edu.co/index.php/autoevaluacion-institucional/modelo-de-autoevaluacion' class='btn'>Ver detalles »</a></p>"
-                                    + "</div>"
-                                    + "<div class='span4'>"
-                                    + "<h2>Marco Normativo</h2>"
-                                    + "<p>Los Lineamientos de Autoevaluación para la Acreditación Institucional, el Sistema de Aseguramiento de la Calidad en Colombia, y El Modelo de Autoevaluación Institucional con fines de acreditación de la Universidad de Cartagena, se fundamentan en normas externas y normas internas. </p>"
-                                    + "<p><a target='_blank' href='http://autoevaluacioninstitucional.unicartagena.edu.co/index.php/autoevaluacion-institucional/marco-normativo' class='btn'>Ver detalles »</a></p>"
-                                    + "</div><!--/span-->"
-                                    + "</div><!--/row-->"
-                                    + "</div>");
-                            $("ul.nav-list li").removeClass("active");
-                            $(".nav-collapse .nav >li:eq(0)").addClass("active");
-                            $("ul.nav-list li").siblings().children("a").children("i").removeClass("icon-white");
-                            return false;
-                        } //fin inicio
+                                            + "<div class='hero-unit'>"
+                                            + "<h1>¡Autoevaluaci&oacute;n Institucional!</h1>"
+                                            + "<p style='font-size: 18px; font-weight: 200; line-height: 27px;'>El Consejo Acad&eacute;mico aprob&oacute; el Modelo de Autoevaluaci&oacute;n con fines de Acreditaci&oacute;n Institucional de la Universidad de Cartagena; instrumento de gesti&oacute;n que permite la revisi&oacute;n sistem&aacute;tica de los procesos acad&eacute;micos y administrativos para  la elaboraci&oacute;n y puesta en marcha de planes de mejoramiento y de mantenimiento que den respuesta a su pol&iacute;tica de calidad.</p>"
+                            + "<p><a class='btn btn-primary btn-large' target='_blank' href='http://autoevaluacioninstitucional.unicartagena.edu.co/index.php/autoevaluacion-institucional'>Leer M&aacute;s »</a></p>"
+                            + "</div>"
+                            + "<div class='row-fluid'>"
+                            + "<div class='span4'>"
+                            + "<h2>Definici&oacute;n</h2>"
+                                            + "<p>Para la Institución, la autoevaluación es un instrumento de gestión, que le permite una revisión sistemática de los procesos académicos y administrativos. De esta manera, se propone optimizar y abrir espacios para la elaboración y puesta en marcha de planes de mejoramiento y de mantenimiento que, por supuesto, den respuesta a su política de calidad.</p>"
+                            + "<p><a target='_blank' href='http://autoevaluacioninstitucional.unicartagena.edu.co/index.php/autoevaluacion-institucional/definicion' class='btn'>Ver detalles »</a></p>"
+                            + "</div><!--/span-->"
+                            + "<div class='span4'>"
+                                            + "<h2>Modelo</h2>"
+                                            + "<p>El Modelo de Autoevaluación de la Universidad de Cartagena se diseñó siguiendo los lineamientos establecidos por el CNA y  fue articulado a la política de mejoramiento de la calidad de la Institución. De acuerdo a ello, lo constituyen un conjunto de factores, características e indicadores que sirven como instrumento analítico en la valoración de los diversos elementos que intervienen en la operación comprensiva de la calidad de la Institución.</p>"
+                                            + "<p><a href='http://autoevaluacioninstitucional.unicartagena.edu.co/images/pdf/modelo_de_autoevaluacion_institucional_.pdf'>Descargar Modelo de Autoevaluación Institucional</a></p></p>"
+                                            + "<p><a target='_blank' href='http://autoevaluacioninstitucional.unicartagena.edu.co/index.php/autoevaluacion-institucional/modelo-de-autoevaluacion' class='btn'>Ver detalles »</a></p>"
+                            + "</div>"
+                            + "<div class='span4'>"
+                            + "<h2>Marco Normativo</h2>"
+                                            + "<p>Los Lineamientos de Autoevaluación para la Acreditación Institucional, el Sistema de Aseguramiento de la Calidad en Colombia, y El Modelo de Autoevaluación Institucional con fines de acreditación de la Universidad de Cartagena, se fundamentan en normas externas y normas internas. </p>"
+                                            + "<p><a target='_blank' href='http://autoevaluacioninstitucional.unicartagena.edu.co/index.php/autoevaluacion-institucional/marco-normativo' class='btn'>Ver detalles »</a></p>"
+                                            + "</div><!--/span-->"
+                                            + "</div><!--/row-->"
+                                            + "</div>");
+                                            $("ul.nav-list li").removeClass("active");
+                                            $(".nav-collapse .nav >li:eq(0)").addClass("active");
+                                            $("ul.nav-list li").siblings().children("a").children("i").removeClass("icon-white");
+                                            return false;
+                                            } //fin inicio
 
 
 
-                        if (hash != "#detalleProceso" && hash != "#listarPonderacionFactor" && hash != "#listarPonderacionCaracteristica"
-                                && hash != "#listarProcesos" && hash != "#listarEvaluarDoc" && hash != "#listarEvaluarNum" && hash.indexOf("#detalleFactor") == -1 && hash.indexOf("#detallePFactor") == -1 && hash.indexOf("#detallePCaracteristica") == -1
-                                && hash.indexOf("#detalleCaracteristica") == -1 && hash.indexOf("#detalleIndicador") == -1 && hash.indexOf("#detallePIndicador") == -1 && hash != "#CerrarSesion" && hash.indexOf("#detallePregunta") == -1 && hash.indexOf("#verEncuesta") == -1 && hash.indexOf("#detalleDPregunta") == -1)
-                        { //si no es ---
+                                    if (hash != "#detalleProceso" && hash != "#listarPonderacionFactor" && hash != "#listarPonderacionCaracteristica"
+                                            && hash != "#listarProcesos" && hash != "#listarEvaluarDoc" && hash != "#listarEvaluarNum" && hash.indexOf("#detalleFactor") == - 1 && hash.indexOf("#detallePFactor") == - 1 && hash.indexOf("#detallePCaracteristica") == - 1
+                                            && hash.indexOf("#detalleCaracteristica") == - 1 && hash.indexOf("#detalleIndicador") == - 1 && hash.indexOf("#detallePIndicador") == - 1 && hash != "#CerrarSesion" && hash.indexOf("#detallePregunta") == - 1 && hash.indexOf("#verEncuesta") == - 1 && hash.indexOf("#detalleDPregunta") == - 1)
+                                            { //si no es ---
 
-                            if (middleLayout) {
+                                            if (middleLayout) {
 
-                                middleLayout.destroy();
-                                window[ "middleLayout" ] = null;
+                                            middleLayout.destroy();
+                                                    window[ "middleLayout" ] = null;
+                                                    }
+                                            if (innerLayout) {
+                                            innerLayout.destroy();
+                                                    window[ "innerLayout" ] = null;
+                                                    }
 
-                            }
-                            if (innerLayout) {
-                                innerLayout.destroy();
-                                window[ "innerLayout" ] = null;
-                            }
+                                            var auxAsignarC1;
+                                                    $("div.ui-layout-center").empty();
+                                                    var url3 = "<%=request.getContextPath()%>/" + hash;
+                                                    if (hash == "#PonderacionFactor") {
+                                            url3 = url3.replace('#', "ControllerAI?action=") + "AI";
+                                                    $("div.ui-layout-center").empty();
+                                                    $.ajax({
+                                                    type: "POST",
+                                                            url: url3,
+                                                            success: function(data)
+                                                            {
 
-                            var auxAsignarC1;
+                                                            $(".contenido").append(data);
+                                                                    setTimeout(function() {
+                                                                    $(".page_loading").hide();
+                                                                    }, 200);
+                                                                    setTimeout(function() {
+                                                                    $("div.ui-layout-center").scrollspy();
+                                                                    }, 500);
+                                                                    $("div.ui-layout-center").scrollspy('refresh');
+                                                                    $("#formPondeFa").validate({
+                                                            errorElement: "em"
+                                                                    ,
+                                                                    highlight: function(element, errorClass) {
+                                                                    $(element).parent("td").children("div").addClass("in");
+                                                                            $(element).parent("td").children("div").show();
+                                                                    },
+                                                                    unhighlight: function(element, errorClass, validClass) {
+                                                                    $(element).parent("td").children("div").removeClass("in");
+                                                                            $(element).parent("td").children("div").hide();
+                                                                    },
+                                                                    errorPlacement: function(error, element) {
+                                                                    error.appendTo($(element).parent("td").children("div"));
+                                                                    },
+                                                                    rules: {
+                                                                    field: {
+                                                                    required: true,
+                                                                            number: true
+                                                                    }
+                                                                    },
+                                                                    submitHandler: function() {
+                                                                    var suma = 0;
+                                                                            $("input[name^='ponderacion']").each(function() {
+                                                                    suma += Number($(this).val());
+                                                                    });
+                                                                            if (suma == 100) {
+                                                                    setTimeout(function() {
+                                                                    $.ajax({
+                                                                    type: 'POST',
+                                                                            url: "<%=request.getContextPath()%>/formController?action=asignarPonderacionFactorAIp",
+                                                                            data: $("#formPondeFa").serialize(),
+                                                                            success: function() {
+                                                                            //alert("Ponderación de Factores Actualizada con Exito!");
+                                                                            $('#myModalF').modal();
+                                                                                    $('#myModalF').on('hidden', function() {
+                                                                            location = "<%=request.getContextPath()%>/#listarPonderacionFactor";
+                                                                            })
+                                                                            } //fin success
+
+                                                                    }); //fin $.ajax
+                                                                    }, 400);
+                                                                    } else {
+
+                                                                    $(".alert-error").show();
+                                                                            $("ul.nav-pills li:eq(0) a").trigger("click");
+                                                                    }
 
 
-                            $("div.ui-layout-center").empty();
-                            var url3 = "<%=request.getContextPath()%>/" + hash;
+                                                                    } //fin submitHandler
 
-                            if (hash == "#PonderacionFactor") {
-                                url3 = url3.replace('#', "ControllerAI?action=") + "AI";
-
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: "POST",
-                                    url: url3,
-                                    success: function(data)
-                                    {
-
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-
-
-                                        setTimeout(function() {
-                                            $("div.ui-layout-center").scrollspy();
-                                        }, 500);
-
-                                        $("div.ui-layout-center").scrollspy('refresh');
-
-
-
-                                        $("#formPondeFa").validate({
-                                            errorElement: "em"
-                                                    ,
-                                            highlight: function(element, errorClass) {
-                                                $(element).parent("td").children("div").addClass("in");
-                                                $(element).parent("td").children("div").show();
-                                            },
-                                            unhighlight: function(element, errorClass, validClass) {
-                                                $(element).parent("td").children("div").removeClass("in");
-                                                $(element).parent("td").children("div").hide();
-                                            },
-                                            errorPlacement: function(error, element) {
-                                                error.appendTo($(element).parent("td").children("div"));
-                                            },
-                                            rules: {
-                                                field: {
-                                                    required: true,
-                                                    number: true
-                                                }
-                                            },
-                                            submitHandler: function() {
-                                                var suma = 0;
-                                                $("input[name^='ponderacion']").each(function() {
-                                                    suma += Number($(this).val());
-
-
-                                                });
-                                                if (suma == 100) {
-                                                    setTimeout(function() {
-                                                        $.ajax({
-                                                            type: 'POST',
-                                                            url: "<%=request.getContextPath()%>/formController?action=asignarPonderacionFactorAIp",
-                                                            data: $("#formPondeFa").serialize(),
-                                                            success: function() {
-                                                                //alert("Ponderación de Factores Actualizada con Exito!");
-                                                                $('#myModalF').modal();
-                                                                $('#myModalF').on('hidden', function() {
-                                                                    location = "<%=request.getContextPath()%>/#listarPonderacionFactor";
-                                                                })
+                                                            });
                                                             } //fin success
-
-                                                        }); //fin $.ajax
-                                                    }, 400);
-                                                } else {
-
-                                                    $(".alert-error").show();
-                                                    $("ul.nav-pills li:eq(0) a").trigger("click");
-                                                }
-
-
-                                            } //fin submitHandler
-
-                                        });
-                                    } //fin success
-                                }); //fin del $.ajax
-                            }
-                            else if (hash == "#PonderacionCaracteristica") {
-                                url3 = url3.replace('#', "ControllerAI?action=") + "AI";
-
-
-
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: "POST",
-                                    url: url3,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-
-                                        setTimeout(function() {
-                                            $("div.ui-layout-center").scrollspy();
-                                        }, 500);
-                                        $("div.ui-layout-center").scrollspy('refresh');
-                                        //{offset:80}   
-                                    } //fin success
-                                }); //fin del $.ajax
-
-
-                            }
-                            else if (hash == "#AsignacionEncuestas") {
-                                url3 = url3.replace('#', "ControllerAI?action=") + "AI";
-
-
-                                var jaja34 = function() {
-                                    $("div.ui-layout-center").empty();
-                                    $.ajax({
-                                        type: "POST",
-                                        url: url3,
-                                        success: function(data)
-                                        {
-                                            $(".contenido").append(data);
-                                            setTimeout(function() {
-                                                $(".page_loading").hide();
-                                            }, 200);
-
-
-                                            $("#formAsigEnc").submit(function(event) {
-                                                event.preventDefault();
-
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    url: "<%=request.getContextPath()%>/formController?action=asignarEncuestasAIp",
-                                                    data: $("#formAsigEnc").serialize(),
-                                                    success: function() {
-
-                                                        $("#resultados").hide();
-                                                        $("#select option:eq(0)").attr("selected", "selected");
-                                                        $('#myModalE').modal();
-
-
-                                                        $('#myModalE').on('hidden', function() {
-                                                            setTimeout(function() {
-                                                                $(".page_loading").hide();
-                                                            }, 200);
-                                                        });
-
-                                                    } //fin success
-
-                                                }); //fin $.ajax
-                                            }); //fin submit
-
-
-
-                                        } //fin success
-                                    }); //fin del $.ajax
-
-                                } //fin jaja34  
-                                jaja34();
-
-
-                            }
-                            else if (hash == "#AsignacionMuestra") {
-                                url3 = url3.replace('#', "ControllerAI?action=") + "AI";
-
-                                var jaja34 = function() {
-                                    $("div.ui-layout-center").empty();
-                                    $.ajax({
-                                        type: "POST",
-                                        url: url3,
-                                        success: function(data)
-                                        {
-                                            $(".contenido").append(data);
-                                            setTimeout(function() {
-                                                $(".page_loading").hide();
-                                            }, 200)
-
-                                        } //fin success
-                                    }); //fin del $.ajax
-
-                                } //fin jaja34  
-                                jaja34();
-
-
-                            }
-                            else if (hash == "#infoDocumental") {
-                                url3 = url3.replace('#', "ControllerAI?action=") + "AI";
-
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: "POST",
-                                    url: url3,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-
-                                        setTimeout(function() {
-                                            $("div.ui-layout-center").scrollspy();
-                                        }, 500);
-                                        $("div.ui-layout-center").scrollspy('refresh');
-
-                                        $("#formInfoDoc").submit(function(event) {
-                                            event.preventDefault();
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: "<%=request.getContextPath()%>/formController?action=evaluarInfoDocumentalAI",
-                                                data: $("#formInfoDoc").serialize(),
-                                                success: function() {
-                                                    $('#myModalID').modal();
-                                                    $('#myModalID').on('hidden', function() {
-                                                        location = "<%=request.getContextPath()%>/#listarEvaluarDoc";
-                                                    })
-                                                } //fin success
-                                            }); //fin $.ajax
-                                        }); //fin submit
-                                        //{offset:80}   
-                                    } //fin success
-                                }); //fin del $.ajax                 
-                            }
-                            else if (hash == "#infoNumerica") {
-                                url3 = url3.replace('#', "ControllerAI?action=") + "AI";
-
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: "POST",
-                                    url: url3,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-                                        setTimeout(function() {
-                                            $("div.ui-layout-center").scrollspy();
-                                        }, 500);
-                                        $("div.ui-layout-center").scrollspy('refresh');
-                                        $("#formInfoNum").submit(function(event) {
-                                            event.preventDefault();
-                                            $.ajax({
-                                                type: 'POST',
-                                                url: "<%=request.getContextPath()%>/formController?action=evaluarInfoNumericaAI",
-                                                data: $("#formInfoNum").serialize(),
-                                                success: function() {
-                                                    $('#myModalIN').modal();
-                                                    $('#myModalIN').on('hidden', function() {
-                                                        location = "<%=request.getContextPath()%>/#listarEvaluarNum";
-                                                    })
-                                                } //fin success
-                                            }); //fin $.ajax
-                                        }); //fin submit
-                                        //{offset:80}   
-                                    } //fin success
-                                }); //fin del $.ajax                 
-                            }
-                            else if (hash == "#CrearProceso") {
-                                var a = 0;
-                                url3 = url3.replace('#', "ControllerAI?action=") + "AI";
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: "POST",
-                                    url: url3,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-
-                                        setTimeout(function() {
-                                        }, 200);
-                                        $("#formCrearProc").validate({
-                                            submitHandler: function() {
-
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    url: "<%=request.getContextPath()%>/formController?action=crearProcesoAIp",
-                                                    data: $("#formCrearProc").serialize(),
-                                                    success: function() {
-                                                        $('#myModalP1').modal();
-
-
-                                                    } //fin success
-                                                }); //fin $.ajax    
-                                            }
-                                        });
-
-
-                                    } //fin success
-                                }); //fin del $.ajax
-                            }
-                            else if (hash == "#CrearProceso1") {
-
-                                var a = 0;
-                                url3 = url3.replace('#', "ControllerAI?action=") + "AI";
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: "POST",
-                                    url: url3,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-
-                                        setTimeout(function() {
-                                        }, 200);
-                                        $("#formCrearProc").validate({
-                                            submitHandler: function() {
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    url: "<%=request.getContextPath()%>/formController?action=crearProcesoAIp",
-                                                    data: $("#formCrearProc").serialize(),
-                                                    success: function() {
-
-                                                        setTimeout(function() {
-                                                            $('#myModalP').modal();
-
-
-                                                        }, 2000);
-
-                                                        $('#myModalP').on('hidden', function() {
-                                                            setTimeout(function() {
-                                                                $(".page_loading").hide();
-                                                            }, 200);
-                                                            $("#menu").load("<%=request.getContextPath()%>/ControllerAI?action=menuAI");
-                                                            setTimeout(function() {
-                                                                location = '<%=request.getContextPath()%>/';
-                                                            }, 200);
-                                                        });
-                                                    } //fin success
-                                                }); //fin $.ajax   
-                                            }
-                                        });
-                                    } //fin success
-                                }); //fin del $.ajax
-                            }
-                            else if (hash == "#IniciarProceso") {
-                                $('#myModalIP2').modal();
-                            }
-                            else if (hash == "#CerrarProceso") {
-                                $('#myModalCP2').modal();
-                            }
-                            else {
-
-
-                                url3 = url3.replace('#', "ControllerAI?action=") + "AI";
-                                $.ajax({
-                                    type: 'POST',
-                                    url: url3,
-                                    success: function(data) {
-
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200)
-                                    } //fin success
-                                }); //fin $.ajax
-                            }
-                            //fin si no es ---
-                        } else { //si sio es ---
-
-                            if (hash == "#detalleProceso")
-                            {
-                                myLayout.addCloseBtn("#west-closer", "west");
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "<%=request.getContextPath()%>/jsonController?ejecucion=detalleProceso",
-                                    success: function() {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "<%=request.getContextPath()%>/ControllerAI?action=detalleProceso",
-                                            success: function(data) {
-                                                $(".contenido").append(data);
-                                                setTimeout(function() {
-                                                    $(".page_loading").hide();
-                                                }, 200);
-                                            } //fin success
-                                        }); //fin $.ajax
-                                    }
-                                });
-                            }
-                            if (hash == "#listarProcesos")
-                            {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarProcesos",
-                                    success: function() {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "<%=request.getContextPath()%>/ControllerAI?action=listarProceso",
-                                            success: function(data) {
-                                                $("#center").html(data);
-                                            }
-                                        })
-                                    } //fin success
-                                }); //fin $.ajax
-                            }
-                            if (hash == "#listarPonderacionFactor") {
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarPonderacionFactor",
-                                    success: function() {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "<%=request.getContextPath()%>/ControllerAI?action=listarPonderacionFactor",
-                                            success: function(data) {
-                                                $(".contenido").append(data);
-                                                setTimeout(function() {
-                                                    $(".page_loading").hide();
-                                                }, 200)
-                                            }
-                                        })
-                                    } //fin success
-                                }); //fin $.ajax
-                            }
-                            if (hash == "#listarPonderacionCaracteristica") {
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarPonderacionCaracteristica",
-                                    success: function() {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "<%=request.getContextPath()%>/ControllerAI?action=listarPonderacionCaracteristica",
-                                            success: function(data) {
-                                                $(".contenido").append(data);
-                                                setTimeout(function() {
-                                                    $(".page_loading").hide();
-                                                }, 200);
-                                            }
-                                        })
-                                    } //fin success
-                                }); //fin $.ajax
-                            }
-                            if (hash == "#listarEvaluarDoc") {
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarEvaluarDoc",
-                                    success: function() {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "<%=request.getContextPath()%>/ControllerAI?action=listarEvaluarDoc",
-                                            success: function(data)
-                                            {
-                                                $(".contenido").append(data);
-                                                setTimeout(function() {
-                                                    $(".page_loading").hide();
-                                                }, 200);
-                                            }
-                                        })
-                                    } //fin success
-                                }); //fin $.ajax
-                            }
-                            if (hash == "#listarEvaluarNum") {
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarEvaluarNum",
-                                    success: function() {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "<%=request.getContextPath()%>/ControllerAI?action=listarEvaluarNum",
-                                            success: function(data)
-                                            {
-                                                $(".contenido").append(data);
-                                                setTimeout(function() {
-                                                    $(".page_loading").hide();
-                                                }, 200);
-                                            }
-                                        })
-                                    } //fin success
-                                }); //fin $.ajax
-                            }
-
-                            else if (hash.indexOf("#detalleFactor") != -1) {
-
-                                var url4 = "<%=request.getContextPath()%>/" + hash;
-
-                                url4 = url4.replace('#detalleFactor', "ControllerAI?action=detalleFactorAI");
-                                url4 = url4.replace('&', "&idF=");
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: url4,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-
-                                    } //fin success
-                                }); //fin $.ajax
-
-                            }else if (hash.indexOf("#detallePFactor") != -1) {
-
-                                var url4 = "<%=request.getContextPath()%>/" + hash;
-
-                                url4 = url4.replace('#detallePFactor', "ControllerAI?action=detallePFactorAI");
-                                url4 = url4.replace('&', "&idF=");
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: url4,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-
-                                    } //fin success
-                                }); //fin $.ajax
-
-                            } else if (hash.indexOf("#detalleCaracteristica") != -1) {
-
-                                var url4 = "<%=request.getContextPath()%>/" + hash;
-
-                                url4 = url4.replace('#detalleCaracteristica', "ControllerAI?action=detalleCaracteristicaAI");
-                                url4 = url4.replace('&', "&idC=");
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: url4,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-                                    } //fin success
-                                }); //fin $.ajax
-
-                            }
-                            else if (hash.indexOf("#detallePCaracteristica") != -1) {
-
-                                var url4 = "<%=request.getContextPath()%>/" + hash;
-
-                                url4 = url4.replace('#detallePCaracteristica', "ControllerAI?action=detallePCaracteristicaAI");
-                                url4 = url4.replace('&', "&idC=");
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: url4,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-                                    } //fin success
-                                }); //fin $.ajax
-
-                            }
-                            else if (hash.indexOf("#detalleIndicador") != -1) {
-
-                                var url4 = "<%=request.getContextPath()%>/" + hash;
-
-                                url4 = url4.replace('#detalleIndicador', "ControllerAI?action=detalleIndicadorAI");
-                                url4 = url4.replace('&', "&idI=");
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: url4,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-                                    } //fin success
-                                }); //fin $.ajax
-
-                            }
-                            else if (hash.indexOf("#detallePIndicador") != -1) {
-
-                                var url4 = "<%=request.getContextPath()%>/" + hash;
-
-                                url4 = url4.replace('#detallePIndicador', "ControllerAI?action=detallePIndicadorAI");
-                                url4 = url4.replace('&', "&idI=");
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: url4,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-                                    } //fin success
-                                }); //fin $.ajax
-
-                            }
-                            else if (hash.indexOf("#detallePregunta") != -1) {
-
-                                var url4 = "<%=request.getContextPath()%>/" + hash;
-
-                                url4 = url4.replace('#detallePregunta', "ControllerAI?action=detallePreguntaAI");
-                                url4 = url4.replace('&', "&idP=");
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: url4,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-
-                                    } //fin success
-                                }); //fin $.ajax
-
-                            }
-                            else if (hash.indexOf("#detalleDPregunta") != -1) {
-                                console.log("pasamos por aqui!!!")
-                                var url4 = "<%=request.getContextPath()%>/" + hash;
-
-                                url4 = url4.replace('#detalleDPregunta', "ControllerAI?action=detalleDPreguntaAI");
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: url4,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        setTimeout(function() {
-                                            $(".page_loading").hide();
-                                        }, 200);
-
-                                    } //fin success
-                                }); //fin $.ajax
-
-                            }
-
-
-                            else if (hash.indexOf("#verEncuesta") != -1) {
-                                var cual = hash.split("&");
-                                var url3 = "<%=request.getContextPath()%>/ControllerCC?action=";
-                                url3 = url3.concat(cual[0].substring(1), "CC&id=", cual[1]);
-                                $("div.ui-layout-center").empty();
-                                $.ajax({
-                                    type: "POST",
-                                    url: url3,
-                                    success: function(data)
-                                    {
-                                        $(".contenido").append(data);
-                                        $(".contenido").show(200, function() {
-                                            $(".page_loading").hide();
-                                        })
-
-                                    } //fin success
-                                }); //fin del $.ajax
-                            }
-
-
-                        } //fin si si es ---
-
-                    } //fin else principal
-
-                });
-
-            });  //fin del function   
-
-
-
-            //setTimeout(function () { $.jstree._focused().select_node("#detalle"); }, 1000);
+                                                    }); //fin del $.ajax
+                                                    }
+                                            else if (hash == "#PonderacionCaracteristica") {
+                                            url3 = url3.replace('#', "ControllerAI?action=") + "AI";
+                                                    $("div.ui-layout-center").empty();
+                                                    $.ajax({
+                                                    type: "POST",
+                                                            url: url3,
+                                                            success: function(data)
+                                                            {
+                                                            $(".contenido").append(data);
+                                                                    setTimeout(function() {
+                                                                    $(".page_loading").hide();
+                                                                    }, 200);
+                                                                    setTimeout(function() {
+                                                                    $("div.ui-layout-center").scrollspy();
+                                                                    }, 500);
+                                                                    $("div.ui-layout-center").scrollspy('refresh');
+                                                                    //{offset:80}   
+                                                            } //fin success
+                                                    }); //fin del $.ajax
+
+
+                                                    }
+                                            else if (hash == "#AsignacionEncuestas") {
+                                            url3 = url3.replace('#', "ControllerAI?action=") + "AI";
+                                                    var jaja34 = function() {
+                                                    $("div.ui-layout-center").empty();
+                                                            $.ajax({
+                                                            type: "POST",
+                                                                    url: url3,
+                                                                    success: function(data)
+                                                                    {
+                                                                    $(".contenido").append(data);
+                                                                            setTimeout(function() {
+                                                                            $(".page_loading").hide();
+                                                                            }, 200);
+                                                                            $("#formAsigEnc").submit(function(event) {
+                                                                    event.preventDefault();
+                                                                            $.ajax({
+                                                                            type: 'POST',
+                                                                                    url: "<%=request.getContextPath()%>/formController?action=asignarEncuestasAIp",
+                                                                                    data: $("#formAsigEnc").serialize(),
+                                                                                    success: function() {
+
+                                                                                    $("#resultados").hide();
+                                                                                            $("#select option:eq(0)").attr("selected", "selected");
+                                                                                            $('#myModalE').modal();
+                                                                                            $('#myModalE').on('hidden', function() {
+                                                                                    setTimeout(function() {
+                                                                                    $(".page_loading").hide();
+                                                                                    }, 200);
+                                                                                    });
+                                                                                    } //fin success
+
+                                                                            }); //fin $.ajax
+                                                                    }); //fin submit
+
+
+
+                                                                    } //fin success
+                                                            }); //fin del $.ajax
+
+                                                    } //fin jaja34  
+                                            jaja34();
+                                                    }
+                                            else if (hash == "#AsignacionMuestra") {
+                                            url3 = url3.replace('#', "ControllerAI?action=") + "AI";
+                                                    var jaja34 = function() {
+                                                    $("div.ui-layout-center").empty();
+                                                            $.ajax({
+                                                            type: "POST",
+                                                                    url: url3,
+                                                                    success: function(data)
+                                                                    {
+                                                                    $(".contenido").append(data);
+                                                                            setTimeout(function() {
+                                                                            $(".page_loading").hide();
+                                                                            }, 200)
+
+                                                                    } //fin success
+                                                            }); //fin del $.ajax
+
+                                                    } //fin jaja34  
+                                            jaja34();
+                                                    }
+                                            else if (hash == "#infoDocumental") {
+                                            url3 = url3.replace('#', "ControllerAI?action=") + "AI";
+                                                    $("div.ui-layout-center").empty();
+                                                    $.ajax({
+                                                    type: "POST",
+                                                            url: url3,
+                                                            success: function(data)
+                                                            {
+                                                            $(".contenido").append(data);
+                                                                    $(".page_loading").hide();
+                                                                    //{offset:80}   
+                                                            } //fin success
+                                                    }); //fin del $.ajax                 
+                                                    }
+                                            else if (hash == "#infoNumerica") {
+                                            url3 = url3.replace('#', "ControllerAI?action=") + "AI";
+                                                    $("div.ui-layout-center").empty();
+                                                    $.ajax({
+                                                    type: "POST",
+                                                            url: url3,
+                                                            success: function(data)
+                                                            {
+                                                            $(".contenido").append(data);
+                                                                    setTimeout(function() {
+                                                                    $(".page_loading").hide();
+                                                                    }, 200);
+                                                                    setTimeout(function() {
+                                                                    $("div.ui-layout-center").scrollspy();
+                                                                    }, 500);
+                                                                    $("div.ui-layout-center").scrollspy('refresh');
+                                                                    $("#formInfoNum").submit(function(event) {
+                                                            event.preventDefault();
+                                                                    $.ajax({
+                                                                    type: 'POST',
+                                                                            url: "<%=request.getContextPath()%>/formController?action=evaluarInfoNumericaAI",
+                                                                            data: $("#formInfoNum").serialize(),
+                                                                            success: function() {
+                                                                            $('#myModalIN').modal();
+                                                                                    $('#myModalIN').on('hidden', function() {
+                                                                            location = "<%=request.getContextPath()%>/#listarEvaluarNum";
+                                                                            })
+                                                                            } //fin success
+                                                                    }); //fin $.ajax
+                                                            }); //fin submit
+                                                                    //{offset:80}   
+                                                            } //fin success
+                                                    }); //fin del $.ajax                 
+                                                    }
+                                            else if (hash == "#CrearProceso") {
+                                            var a = 0;
+                                                    url3 = url3.replace('#', "ControllerAI?action=") + "AI";
+                                                    $("div.ui-layout-center").empty();
+                                                    $.ajax({
+                                                    type: "POST",
+                                                            url: url3,
+                                                            success: function(data)
+                                                            {
+                                                            $(".contenido").append(data);
+                                                                    setTimeout(function() {
+                                                                    $(".page_loading").hide();
+                                                                    }, 200);
+                                                                    setTimeout(function() {
+                                                                    }, 200);
+                                                                    $("#formCrearProc").validate({
+                                                            submitHandler: function() {
+
+                                                            $.ajax({
+                                                            type: 'POST',
+                                                                    url: "<%=request.getContextPath()%>/formController?action=crearProcesoAIp",
+                                                                    data: $("#formCrearProc").serialize(),
+                                                                    success: function() {
+                                                                    $('#myModalP1').modal();
+                                                                    } //fin success
+                                                            }); //fin $.ajax    
+                                                            }
+                                                            });
+                                                            } //fin success
+                                                    }); //fin del $.ajax
+                                                    }
+                                            else if (hash == "#CrearProceso1") {
+
+                                            var a = 0;
+                                                    url3 = url3.replace('#', "ControllerAI?action=") + "AI";
+                                                    $("div.ui-layout-center").empty();
+                                                    $.ajax({
+                                                    type: "POST",
+                                                            url: url3,
+                                                            success: function(data)
+                                                            {
+                                                            $(".contenido").append(data);
+                                                                    setTimeout(function() {
+                                                                    $(".page_loading").hide();
+                                                                    }, 200);
+                                                                    setTimeout(function() {
+                                                                    }, 200);
+                                                                    $("#formCrearProc").validate({
+                                                            submitHandler: function() {
+                                                            $.ajax({
+                                                            type: 'POST',
+                                                                    url: "<%=request.getContextPath()%>/formController?action=crearProcesoAIp",
+                                                                    data: $("#formCrearProc").serialize(),
+                                                                    success: function() {
+
+                                                                    setTimeout(function() {
+                                                                    $('#myModalP').modal();
+                                                                    }, 2000);
+                                                                            $('#myModalP').on('hidden', function() {
+                                                                    setTimeout(function() {
+                                                                    $(".page_loading").hide();
+                                                                    }, 200);
+                                                                            $("#menu").load("<%=request.getContextPath()%>/ControllerAI?action=menuAI");
+                                                                            setTimeout(function() {
+                                                                            location = '<%=request.getContextPath()%>/';
+                                                                            }, 200);
+                                                                    });
+                                                                    } //fin success
+                                                            }); //fin $.ajax   
+                                                            }
+                                                            });
+                                                            } //fin success
+                                                    }); //fin del $.ajax
+                                                    }
+                                            else if (hash == "#IniciarProceso") {
+                                            $('#myModalIP2').modal();
+                                                    }
+                                            else if (hash == "#CerrarProceso") {
+                                            $('#myModalCP2').modal();
+                                                    }
+                                            else {
+
+
+                                            url3 = url3.replace('#', "ControllerAI?action=") + "AI";
+      $.ajax({
+        type: 'POST',
+                url: url3,
+                success: function(data) {
+
+                $(".contenido").append(data);
+                        setTimeout(function() {
+                        $(".page_loading").hide();
+                        }, 200)
+                } //fin success
+        }); //fin $.ajax
+}
+//fin si no es ---
+} else { //si sio es ---
+
+if (hash == "#detalleProceso")
+{
+myLayout.addCloseBtn("#west-closer", "west");
+        $("div.ui-layout-center").empty();
+        $.ajax({
+        type: 'POST',
+                url: "<%=request.getContextPath()%>/jsonController?ejecucion=detalleProceso",
+                success: function() {
+                $.ajax({
+                type: 'POST',
+                        url: "<%=request.getContextPath()%>/ControllerAI?action=detalleProceso",
+                        success: function(data) {
+                        $(".contenido").append(data);
+                                setTimeout(function() {
+                                $(".page_loading").hide();
+                                }, 200);
+                        } //fin success
+                }); //fin $.ajax
+                }
+        });
+}
+if (hash == "#listarProcesos")
+{
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarProcesos",
+success: function() {
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/ControllerAI?action=listarProceso",
+success: function(data) {
+$("#center").html(data);
+}
+})
+} //fin success
+}); //fin $.ajax
+}
+if (hash == "#listarPonderacionFactor") {
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarPonderacionFactor",
+success: function() {
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/ControllerAI?action=listarPonderacionFactor",
+success: function(data) {
+$(".contenido").append(data);
+    setTimeout(function() {
+    $(".page_loading").hide();
+    }, 200)
+}
+})
+} //fin success
+}); //fin $.ajax
+}
+if (hash == "#listarPonderacionCaracteristica") {
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarPonderacionCaracteristica",
+success: function() {
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/ControllerAI?action=listarPonderacionCaracteristica",
+success: function(data) {
+$(".contenido").append(data);
+    setTimeout(function() {
+    $(".page_loading").hide();
+    }, 200);
+}
+})
+} //fin success
+}); //fin $.ajax
+}
+if (hash == "#listarEvaluarDoc") {
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarEvaluarDoc",
+success: function() {
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/ControllerAI?action=listarEvaluarDoc",
+success: function(data)
+{
+$(".contenido").append(data);
+    setTimeout(function() {
+    $(".page_loading").hide();
+    }, 200);
+}
+})
+} //fin success
+}); //fin $.ajax
+}
+if (hash == "#listarEvaluarNum") {
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/jsonController?ejecucion=listarEvaluarNum",
+success: function() {
+$.ajax({
+type: 'POST',
+url: "<%=request.getContextPath()%>/ControllerAI?action=listarEvaluarNum",
+success: function(data)
+{
+$(".contenido").append(data);
+setTimeout(function() {
+$(".page_loading").hide();
+}, 200);
+}
+})
+} //fin success
+}); //fin $.ajax
+}
+
+else if (hash.indexOf("#detalleFactor") != -1) {
+
+var url4 = "<%=request.getContextPath()%>/" + hash;
+
+url4 = url4.replace('#detalleFactor', "ControllerAI?action=detalleFactorAI");
+url4 = url4.replace('&', "&idF=");
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: url4,
+success: function(data)
+{
+$(".contenido").append(data);
+setTimeout(function() {
+$(".page_loading").hide();
+}, 200);
+
+} //fin success
+}); //fin $.ajax
+
+}else if (hash.indexOf("#detallePFactor") != -1) {
+
+var url4 = "<%=request.getContextPath()%>/" + hash;
+
+url4 = url4.replace('#detallePFactor', "ControllerAI?action=detallePFactorAI");
+url4 = url4.replace('&', "&idF=");
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: url4,
+success: function(data)
+{
+$(".contenido").append(data);
+setTimeout(function() {
+$(".page_loading").hide();
+}, 200);
+
+} //fin success
+}); //fin $.ajax
+
+} else if (hash.indexOf("#detalleCaracteristica") != -1) {
+
+var url4 = "<%=request.getContextPath()%>/" + hash;
+
+url4 = url4.replace('#detalleCaracteristica', "ControllerAI?action=detalleCaracteristicaAI");
+url4 = url4.replace('&', "&idC=");
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: url4,
+success: function(data)
+{
+$(".contenido").append(data);
+setTimeout(function() {
+$(".page_loading").hide();
+}, 200);
+} //fin success
+}); //fin $.ajax
+
+}
+else if (hash.indexOf("#detallePCaracteristica") != -1) {
+
+var url4 = "<%=request.getContextPath()%>/" + hash;
+
+url4 = url4.replace('#detallePCaracteristica', "ControllerAI?action=detallePCaracteristicaAI");
+url4 = url4.replace('&', "&idC=");
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: url4,
+success: function(data)
+{
+$(".contenido").append(data);
+setTimeout(function() {
+$(".page_loading").hide();
+}, 200);
+} //fin success
+}); //fin $.ajax
+
+}
+else if (hash.indexOf("#detalleIndicador") != -1) {
+
+var url4 = "<%=request.getContextPath()%>/" + hash;
+
+url4 = url4.replace('#detalleIndicador', "ControllerAI?action=detalleIndicadorAI");
+url4 = url4.replace('&', "&idI=");
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: url4,
+success: function(data)
+{
+$(".contenido").append(data);
+setTimeout(function() {
+$(".page_loading").hide();
+}, 200);
+} //fin success
+}); //fin $.ajax
+
+}
+else if (hash.indexOf("#detallePIndicador") != -1) {
+
+var url4 = "<%=request.getContextPath()%>/" + hash;
+
+url4 = url4.replace('#detallePIndicador', "ControllerAI?action=detallePIndicadorAI");
+url4 = url4.replace('&', "&idI=");
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: url4,
+success: function(data)
+{
+$(".contenido").append(data);
+setTimeout(function() {
+$(".page_loading").hide();
+}, 200);
+} //fin success
+}); //fin $.ajax
+
+}
+else if (hash.indexOf("#detallePregunta") != -1) {
+
+var url4 = "<%=request.getContextPath()%>/" + hash;
+
+url4 = url4.replace('#detallePregunta', "ControllerAI?action=detallePreguntaAI");
+url4 = url4.replace('&', "&idP=");
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: url4,
+success: function(data)
+{
+$(".contenido").append(data);
+setTimeout(function() {
+$(".page_loading").hide();
+}, 200);
+
+} //fin success
+}); //fin $.ajax
+
+}
+else if (hash.indexOf("#detalleDPregunta") != -1) {
+console.log("pasamos por aqui!!!")
+var url4 = "<%=request.getContextPath()%>/" + hash;
+
+url4 = url4.replace('#detalleDPregunta', "ControllerAI?action=detalleDPreguntaAI");
+$("div.ui-layout-center").empty();
+$.ajax({
+type: 'POST',
+url: url4,
+success: function(data)
+{
+$(".contenido").append(data);
+setTimeout(function() {
+$(".page_loading").hide();
+}, 200);
+
+} //fin success
+}); //fin $.ajax
+
+}
+
+
+else if (hash.indexOf("#verEncuesta") != -1) {
+var cual = hash.split("&");
+var url3 = "<%=request.getContextPath()%>/ControllerCC?action=";
+url3 = url3.concat(cual[0].substring(1), "CC&id=", cual[1]);
+$("div.ui-layout-center").empty();
+$.ajax({
+type: "POST",
+url: url3,
+success: function(data)
+{
+$(".contenido").append(data);
+$(".contenido").show(200, function() {
+$(".page_loading").hide();
+})
+
+} //fin success
+}); //fin del $.ajax
+}
+
+
+} //fin si si es ---
+
+} //fin else principal
+
+});
+
+});  //fin del function   
+
+
+
+//setTimeout(function () { $.jstree._focused().select_node("#detalle"); }, 1000);
 
         </script> 
     </head>

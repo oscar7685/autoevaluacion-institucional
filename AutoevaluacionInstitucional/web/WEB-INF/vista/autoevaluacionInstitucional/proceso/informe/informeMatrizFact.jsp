@@ -307,9 +307,7 @@
                         <thead>
                         <th>Id Factor</th>
                         <th>Factor</th>
-                        <th>Ponderacion Factor</th>
                         <th>Grado de Cumplimiento</th>
-                        <th>Evaluacion teniendo en cuenta ponderacion</th>
                         <th>Logro ideal</th>
                         <th>Relacion con el logro ideal</th>
                         </thead>
@@ -325,23 +323,17 @@
                                         <a href="#detalleFactor&${row[0]}" data="${row[1]}">${row[1]}</a>
                                     </td>
                                     <td>   
-                                        <c:out value="${row[2]}"/>
-                                    </td>
-                                    <td>   
                                         <c:out value="${row[3]}"/>
                                     </td>
                                     <td>   
-                                        <c:out value="${row[4]}"/>
+                                        <c:out value="5"/>
                                     </td>
                                     <td>   
-                                        <c:out value="${row[5]}"/>
-                                    </td>
-                                    <td>   
-                                        <c:out value="${row[6]}%"/>
+                                        <c:out value="${row[3]*20}%"/>
                                     </td>
                                 </tr>
-                                <c:set var="ponderacion" value="${ponderacion + row[2]}" />
-                                <c:set var="cumplimiento" value="${(row[2] * row[3])+cumplimiento}" />
+                                
+                                <c:set var="cumplimiento" value="${(row[3])+cumplimiento}" />
                             </c:forEach>
                             <tr>
                                 <td>   
@@ -351,19 +343,13 @@
 
                                 </td>
                                 <td>   
-
-                                </td>
-                                <td>   
-                                    <fmt:formatNumber type="number"   maxFractionDigits="1" value="${cumplimiento/ponderacion}" />
+                                    <fmt:formatNumber type="number"   maxFractionDigits="1" value="${cumplimiento/12}" />
                                 </td>
                                 <td>   
 
                                 </td>
                                 <td>   
-
-                                </td>
-                                <td>   
-                                    <fmt:formatNumber type="number"   maxFractionDigits="1" value="${(cumplimiento/ponderacion)*20}" />%
+                                    <fmt:formatNumber type="number"   maxFractionDigits="1" value="${(cumplimiento/12)*20}" />%
                                 </td>
                             </tr>
                         </tbody>

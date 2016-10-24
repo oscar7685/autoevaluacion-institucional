@@ -1,304 +1,272 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<script type="text/javascript">
-    
-    $(function(){
-        if(${aux_index2 == 2}){
-            $.ajax({
-                type: 'POST',
-                url: "<%=request.getContextPath()%>/ControllerAI?action=recargarEstado",
-                success: function(data){
-                    $("#estado").empty();
-                    $("#estado").html(data);
-                }
-            });
-        }
-        
-        $(".cambiable").each(function() {
-            // Save current value of element
-            $(this).data('oldVal', $(this).val());
-
-            // Look for changes in the value
-            $(this).bind("change", function(event){
-                // If value has changed...
-                if ($(this).data('oldVal') != $(this).val()) {
-                    $(this).parents('tr').children("input[name=^'InfoCambio']").attr("value","1");
-                }
-            });
-        });
-        
-        
-        $("textarea").focus(function(){
-            $(this).css("position","absolute");
-            $(this).animate({
-                width: 350,
-                height: 200,
-                left: '-=100'
-            }, 500);     
-        })
-        $("textarea").focusout(function() {
-            $(this).removeAttr("style");
-        })
-        
-        $("#actualiza").click(function(){
-            $(this).button('loading');
-            $("#formInfoNum").submit();
-            
-        });
-    
-        $("textarea").keyup(function(e){
-            
-            if (e.keyCode == 27){
-                $(this).blur();
-            }
-        });
-        
-        
-        
-        $('a[href^=#InformacionNumerica]').click(function() {
-     
-            if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
-                && location.hostname == this.hostname) {
-
-                var $target2 = $(this.hash);
-             
-                $target2 = $target2.length && $target2 || $('[name=' + this.hash.slice(1) +']');
-                if ($target2.length) {
-                    var targetOffset = $target2.offset().top;
-                    var actual = $('div.ui-layout-center').scrollTop();
-                    if(actual!=0){
-                        $('div.ui-layout-center').animate({scrollTop: actual + targetOffset - 80}, 500);
-                    }else{
-                        $('div.ui-layout-center').animate({scrollTop: targetOffset - 118}, 500);
+<script src="${pageContext.request.contextPath}/script/jquery-1.9.1.min.js"></script>
+<script>
+    //como hay 2 versiones de JQuery declaradas las separamos con jQuery.noConflict()
+    var jQuery191 = jQuery.noConflict();
+    jQuery191.fn.editableTableWidget = function(options) {
+        'use strict';
+        return jQuery191(this).each(function() {
+            var buildDefaultOptions = function() {
+                var opts = jQuery191.extend({}, jQuery191.fn.editableTableWidget.defaultOptions);
+                opts.editor = opts.editor.clone();
+                return opts;
+            },
+                    activeOptions = jQuery191.extend(buildDefaultOptions(), options),
+                    ARROW_LEFT = 37, ARROW_UP = 38, ARROW_RIGHT = 39, ARROW_DOWN = 40, ENTER = 13, ESC = 27, TAB = 9,
+                    element = jQuery191(this),
+                    editor = activeOptions.editor.css('position', 'absolute').hide().appendTo(element.parent()),
+                    active,
+                    showEditor = function(select) {
+                        active = element.find('td:focus');
+                        if (active.length && !active.is(':first-child')) {
+                            editor.val(active.text())
+                                    .removeClass('error')
+                                    .show()
+                                    .offset(active.offset())
+                                    .css(active.css(activeOptions.cloneProperties))
+                                    .width(active.width())
+                                    .height(active.height())
+                                    .focus();
+                            if (select) {
+                                editor.select();
+                            }
+                        }
+                    },
+                    setActiveText = function() {
+                        var text = editor.val(),
+                                evt = jQuery191.Event('change'),
+                                originalContent;
+                        if (active.text() === text || editor.hasClass('error')) {
+                            return true;
+                        }
+                        originalContent = active.html();
+                        active.text(text).trigger(evt, text);
+                        if (evt.result === false) {
+                            active.html(originalContent);
+                        }
+                    },
+                    movement = function(element, keycode) {
+                        if (keycode === ARROW_RIGHT) {
+                            return element.next('td');
+                        } else if (keycode === ARROW_LEFT) {
+                            return element.prev('td');
+                        } else if (keycode === ARROW_UP) {
+                            return element.parent().prev().children().eq(element.index());
+                        } else if (keycode === ARROW_DOWN) {
+                            return element.parent().next().children().eq(element.index());
+                        }
+                        return [];
+                    };
+            editor.blur(function() {
+                setActiveText();
+                editor.hide();
+            }).keydown(function(e) {
+                if (e.which === ENTER) {
+                    setActiveText();
+                    editor.hide();
+                    active.focus();
+                    e.preventDefault();
+                    e.stopPropagation();
+                } else if (e.which === ESC) {
+                    editor.val(active.text());
+                    e.preventDefault();
+                    e.stopPropagation();
+                    editor.hide();
+                    active.focus();
+                } else if (e.which === TAB) {
+                    active.focus();
+                } else if (this.selectionEnd - this.selectionStart === this.value.length) {
+                    var possibleMove = movement(active, e.which);
+                    if (possibleMove.length > 0) {
+                        possibleMove.focus();
+                        e.preventDefault();
+                        e.stopPropagation();
                     }
-                    
-
-                    return false;
                 }
+            })
+                    .on('input paste', function() {
+                        var evt = jQuery191.Event('validate');
+                        active.trigger(evt, editor.val());
+                        if (evt.result === false) {
+                            editor.addClass('error');
+                        } else {
+                            editor.removeClass('error');
+                        }
+                    });
+            element.on('click keypress dblclick', showEditor)
+                    .css('cursor', 'pointer')
+                    .keydown(function(e) {
+                        var prevent = true,
+                                possibleMove = movement(jQuery191(e.target), e.which);
+                        if (possibleMove.length > 0) {
+                            possibleMove.focus();
+                        } else if (e.which === ENTER) {
+                            showEditor(false);
+                        } else if (e.which === 17 || e.which === 91 || e.which === 93) {
+                            showEditor(true);
+                            prevent = false;
+                        } else {
+                            prevent = false;
+                        }
+                        if (prevent) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }
+                    });
 
+            element.find('td').prop('tabindex', 1);
+
+            jQuery191(window).on('resize', function() {
+                if (editor.is(':visible')) {
+                    editor.offset(active.offset())
+                            .width(active.width())
+                            .height(active.height());
+                }
+            });
+        });
+
+    };
+    jQuery191.fn.editableTableWidget.defaultOptions = {
+        cloneProperties: ['padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right',
+            'text-align', 'font', 'font-size', 'font-family', 'font-weight',
+            'border', 'border-top', 'border-bottom', 'border-left', 'border-right'],
+        editor: jQuery191('<input>')
+    };
+
+
+</script>
+
+<%--<script src="<%=request.getContextPath()%>/bootstrap/js/bootstrap-popover.js"></script>--%>
+<style type="text/css"> 
+    td:focus {
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #7ab5d3;
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #7ab5d3;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #7ab5d3;	
+        outline: rgb(91, 157, 217) auto 5px;
+    }
+    textarea.error {
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px red;
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px red;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px red;	
+        outline: thin auto red;
+    }
+    textarea {
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #7ab5d3;
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #7ab5d3;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #7ab5d3;	
+        outline: rgb(91, 157, 217) auto 5px;
+        outline-offset: 0px;
+        border: none;
+    }
+</style>
+<br>
+<div class="hero-unit">
+    <div class="row">
+        <div id="conte" class="span12">
+            <form class="form-horizontal" method="post" action="">
+                <fieldset>
+                    <legend>Evaluar información n&uacute;merica</legend>
+                    <table id="tablaX" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="span3">Indicador</th>
+                                <th class="span2">Documento asociado</th>
+                                <th class="span2">Responsable</th>
+                                <th class="span1">Medio</th>
+                                <th class="span1">Lugar</th>
+                                <th class="span1">Estado <i style="font-size: 25px; vertical-align: -2px;" class="icon-info-sign" data-content="<p style='font-weight:normal'>5: La información requerida en el indicador está completa y actualizada.<br/>
+                                                            4: La información requerida en el indicador está completa y en proceso de actualización.<br/>
+                                                            3: La información requerida en el indicador está en proceso de elaboración.<br/>
+                                                            2: Se detectó la inexistencia de la información requerida en el indicador. Ya se previó su elaboración.<br/>
+                                                            1: La información requerida en el indicador no existe y no se ha previsto su elaboración.<br/>
+                                                            0: No aplica</p>" data-original-title="Escala de gradación"></i></th>
+                                <th class="span2">Acci&oacute;n a implementar u observaci&oacute;n</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <c:forEach items="${lisrInidicadorsDoc.rowsByIndex}" var="item" varStatus="iter">
+                                <c:set var="encontrado" value="false"></c:set>
+                                <c:forEach items="${listaDoc.rowsByIndex}" var="itemNC" varStatus="iterNC"> 
+                                    <c:choose>
+                                        <c:when test="${item[0]==itemNC[0]}">
+                                            <c:set var="encontrado" value="true"></c:set>
+                                                <tr>
+                                                    <td style="text-align: justify;"><c:out value="${item[1]} ${item[3]}"></c:out>
+                                                    <input type="hidden" name="indicadorInput" value="<c:out value="${item[0]}"></c:out>">
+                                                    </td>
+                                                    <td><c:out value="${itemNC[2]}"></c:out></td>
+                                                <td>${itemNC[3]}</td>
+                                                <td>${itemNC[4]}</td>
+                                                <td>${itemNC[5]}</td>
+                                                <td>${itemNC[6]}</td>
+                                                <td>${itemNC[7]}</td>
+                                            </tr> 
+                                        </c:when>
+                                    </c:choose>
+                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${encontrado==false}">
+                                        <tr>
+                                            <td style="text-align: justify;">${item[1]} ${item[3]}
+                                                <input type="hidden" name="indicadorInput" value="${item[0]}">
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </c:when>
+                                </c:choose>            
+                            </c:forEach>                 
+                        </tbody>
+                    </table>
+                </fieldset>
+            </form>
+        </div><!--/span-->        
+    </div><!--/row-->    
+</div><!--/hero-unit--> 
+<script>
+    jQuery191(function() {
+        jQuery191('#tablaX').editableTableWidget({editor: jQuery191('<textarea>')});
+        jQuery191('#tablaX tr').find("td:eq(5)").on('validate', function(evt, newValue) {
+            if (newValue !== '1' && newValue !== '2' && newValue !== '3' && newValue !== '4' && newValue !== '5' && newValue !== '0') {
+                return false; // mark cell as invalid 
             }
         });
+        jQuery191('#tablaX tr').find("td:eq(5)").on('validate', function(evt, newValue) {
+            if (newValue !== '1' && newValue !== '2' && newValue !== '3' && newValue !== '4' && newValue !== '5' && newValue !== '0') {
+                return false; // mark cell as invalid 
+            }
+        });
+        jQuery191('#tablaX tr').find("td").on('validate', function(evt, newValue) {
+            if (newValue.length > 1999) {
+                return false; // mark cell as invalid 
+            }
+        });
+        jQuery191('#tablaX tr').find("td:eq(0)").on('validate', function(evt, newValue) {
+            return false; // mark cell as invalid 
+        });
+        jQuery191('#tablaX td').on('change', function(evt, newValue) {
+            // do something with the new cell value 
+            var indicador = jQuery191(this).parents("tr").find("input[name='indicadorInput']").val();
+            var columna = jQuery191(this).index();
+            jQuery191.ajax({
+                type: 'POST',
+                url: "<%=request.getContextPath()%>/formController?action=evaluarInfoNumericaAI",
+                data: "indicador=" + indicador + "&columna=" + columna + "&valor=" + encodeURI(newValue),
+                success: function() {
+                    
+                },
+                error: function() {
+                    console.log("algo secede!");
+                }        
+            }); //fin $.ajax
+        });
+        //$("i").popover({trigger: "hover", placement: 'bottom',html: true});
+
     });
-    
 </script>
-<br>
-<c:if test="${auxInfoNumerica == 0}"><!--Si no se ha asignado nada-->
-    <div class="subnav" data-top="80">
-        <ul class="nav nav-pills">
-            <c:forEach items="1,2,3,4,5,6,7,8,9,10" var="row" varStatus="iter">
-                <c:choose>
-                    <c:when test="${(iter.index == 0)}">
-                        <li class="active"><a href="#InformacionNumerica${iter.index+1}">Factor ${iter.index + 1}</a></li>
-                    </c:when>
-                    <c:otherwise>
-                        <li><a href="#InformacionNumerica${iter.index+1}">Factor ${iter.index + 1}</a></li>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach> 
-        </ul>
-    </div>
-    <div class="hero-unit">
-        <div class="row">
-            <div id="conte" class="span12">
-                <form id="formInfoNum" class="form-horizontal" method="post">
-                    <fieldset>
-                        <legend>Evaluar información numérica</legend>
-                        <table class="table table-striped">
-                            <thead>
-                            <th>Cod.</th>
-                            <th>Documento asociado</th>
-                            <th>Responsable</th>
-                            <th>Medio</th>
-                            <th>Lugar</th>
-                            <th>Estado</th>
-                            <th>Acción a implementar u observación</th>
-                            </thead>
-                            <tbody>
-                                <c:set var="fActual" value="0"></c:set>
-                                <c:forEach items="${indicadoresNumerica.rowsByIndex}" var="row" varStatus="iter">
-                                    <c:choose>
-                                        <c:when test="${fActual!=row[2]}">
-                                            <tr id="InformacionNumerica${row[2]}">    
-                                                <c:set var="fActual" value="${row[2]}"></c:set>
-                                            </c:when>    
-                                            <c:otherwise>
-                                            <tr>    
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <td style="text-align: justify;">    
-                                            <c:out value="${row[1]}"/>
-                                        </td>
-                                        <td>
-                                            <textarea name="nombreDocumento${row[0]}" rows="4" class="span2" placeholder="Documento asociado"></textarea>
-                                        </td>
-                                        <td>
-                                            <textarea name="responsableDocumento${row[0]}" rows="4" class="span2" placeholder="Responsable"></textarea>
-                                        </td>
-                                        <td>
-                                            <textarea name="medioDocumento${row[0]}" rows="4" class="span1" placeholder="Medio"></textarea>
-                                        </td>
-                                        <td>
-                                            <textarea name="lugarDocumento${row[0]}" rows="4" class="span2" placeholder="Lugar"></textarea>
-                                        </td>
-                                        <td>
-                                            <select class="span1"  name="evaluacionDoc${row[0]}">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                            <input type="hidden"  value="${row[0]}" name="idIndicadorDoc${row[0]}">
-                                        </td>
-                                        <td>
-                                            <textarea name="accionDocumento${row[0]}" rows="4" class="span2" placeholder="Acci&oacute;n a implementar u observaci&oacute;n"></textarea>
-                                        </td>
-                                    </tr>
-                                    <c:set var="iterador" value="${iter.index + 1}" />
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                        <input type="hidden" name="count" id="count" value="${iterador}">
-                        <div class="form-actions">
-                            <button class="btn btn-primary" type="submit">Evaluar Información Numérica</button>
-                            <button class="btn" type="reset">Cancelar</button>
-                        </div>
-                    </fieldset>
-                </form>
-            </div><!--/span-->        
-        </div><!--/row-->    
-    </div><!--/hero-unit--> 
-</c:if>
-<c:if test="${auxInfoNumerica == 1}">
-    <div class="subnav" data-top="80">
-        <ul class="nav nav-pills">
-            <c:forEach items="1,2,3,4,5,6,7,8,9,10" var="row" varStatus="iter">
-                <c:choose>
-                    <c:when test="${(iter.index == 0)}">
-                        <li class="active"><a href="#InformacionNumerica${iter.index+1}">Factor ${iter.index + 1}</a></li>
-                    </c:when>
-                    <c:otherwise>
-                        <li><a href="#InformacionNumerica${iter.index+1}">Factor ${iter.index + 1}</a></li>
-                    </c:otherwise>
-                </c:choose>
-            </c:forEach> 
-        </ul>
-    </div>
-    <div class="hero-unit" >
-        <div class="row">
-            <div id="conte" class="span12">
-                <form id="formInfoNum" class="form-horizontal" method="post">
-                    <fieldset>
-                        <legend>Evaluar información numérica</legend>
-                        <div class="alert alert-info">
-                            <a data-dismiss="alert" class="close">×</a>
-                            <strong>Información!</strong>
-                            La evaluación de información numérica ya ha sido asignada. <a href="<%=request.getContextPath()%>/#listarEvaluarNum">Detalle de información numérica evaluada.</a>
-                        </div>
-                        <br>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Código del indicador</th>
-                                    <th>Documento asociado</th>
-                                    <th>Responsable</th>
-                                    <th>Medio</th>
-                                    <th>Lugar</th>
-                                    <th>Estado</th>
-                                    <th>Acción a implementar u observación</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:set var="fActual" value="0"></c:set>
-                                <c:forEach items="${evaluarcionNumerica.rowsByIndex}" var="row2" varStatus="iter">
-                                    <c:choose>
-                                        <c:when test="${fActual!=row2[10]}">
-                                            <tr id="InformacionNumerica${row2[10]}">
-                                        <input type="hidden" name="InfoCambio${row2[0]}" value="0">
-                                        <c:set var="fActual" value="${row2[10]}"></c:set>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tr>  
-                                        <input type="hidden" name="InfoCambio${row2[0]}" value="0">
-                                    </c:otherwise>
-                                </c:choose>
-                                <td>   
-                                    <c:out value="${row2[9]} ${row2[1]}"/>
-                                </td>
-                                <td>
-                                    <textarea name="nombreDocumento${row2[0]}" rows="4" class="span2 cambiable" placeholder="Documento asociado">${row2[2]}</textarea>
-                                </td>
-                                <td>
-                                    <textarea name="responsableDocumento${row2[0]}" rows="4" class="span2 cambiable" placeholder="Responsable">${row2[3]}</textarea>
-                                </td>
-                                <td>
-                                    <textarea name="medioDocumento${row2[0]}" rows="4" class="span1 cambiable" placeholder="Medio">${row2[4]}</textarea>
-                                </td>
-                                <td>
-                                    <textarea name="lugarDocumento${row2[0]}" rows="4" class="span2 cambiable" placeholder="Lugar">${row2[5]}</textarea>
-                                </td>
-                                <td>
-                                    <select  class="span1 cambiable" name="evaluacionDoc${row2[0]}">
-                                        <c:choose>
-                                            <c:when test="${row2[6] == 1}">
-                                                <option selected="selected" value="1">1</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="1">1</option>
-                                            </c:otherwise>
-                                        </c:choose>                                        
-                                        <c:choose>
-                                            <c:when test="${row2[6] == 2}">
-                                                <option selected="selected" value="2">2</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="2">2</option>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <c:choose>
-                                            <c:when test="${row2[6] == 3}">
-                                                <option selected="selected" value="3">3</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="3">3</option>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <c:choose>
-                                            <c:when test="${row2[6] == 4}">
-                                                <option selected="selected" value="4">4</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="4">4</option>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <c:choose>
-                                            <c:when test="${row2[6] == 5}">
-                                                <option selected="selected" value="5">5</option>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <option value="5">5</option>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </select>
-                                    <input type="hidden"  value="${row2[0]}" name="idIndicadorDoc${row2[0]}">
-                                    <input type="hidden"  value="${row2[8]}" name="idnumericaDoc${row2[0]}">
-                                </td>
-                                <td>
-                                    <textarea name="accionDocumento${row2[0]}" rows="4" class="span2 cambiable" placeholder="Acci&oacute;n a implementar u observaci&oacute;n">${row2[7]}</textarea>
-                                </td>
-                                </tr>
-                                <c:set var="iterador" value="${iter.index + 1}"/>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                        <input type="hidden" name="count" id="count" value="${iterador}">
-                        <div class="form-actions">
-                            <button class="btn btn-primary" id="actualiza" data-original-title="Actualizar Evaluaci&oacute;n" type="button" data-loading-text="Actualizando..." autocomplete="off">Actualizar Evaluación</button>
-                            <button class="btn" type="reset">Cancelar</button>
-                        </div>
-                    </fieldset>
-                </form>
-            </div><!--/span-->        
-        </div><!--/row-->    
-    </div><!--/hero-unit--> 
-</c:if>

@@ -591,23 +591,6 @@
                                             setTimeout(function() {
                                             $(".page_loading").hide();
                                             }, 200);
-                                            setTimeout(function() {
-                                            $("div.ui-layout-center").scrollspy();
-                                            }, 500);
-                                            $("#formInfoDoc").submit(function(event) {
-                                    event.preventDefault();
-                                            $.ajax({
-                                            type: 'POST',
-                                                    url: "<%=request.getContextPath()%>/formController?action=evaluarInfoDocumentalAI",
-                                                    data: $("#formInfoDoc").serialize(),
-                                                    success: function() {
-                                                    $('#myModalID').modal();
-                                                            $('#myModalID').on('hidden', function() {
-                                                    location = "<%=request.getContextPath()%>/#listarEvaluarDoc";
-                                                    })
-                                                    } //fin success
-                                            }); //fin $.ajax
-                                    }); //fin submit
                                             //{offset:80}   
                                     } //fin success
                             }); //fin del $.ajax                 

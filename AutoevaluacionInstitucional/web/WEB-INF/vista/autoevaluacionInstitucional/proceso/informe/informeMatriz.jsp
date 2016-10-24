@@ -226,10 +226,7 @@
                         <th>Id Factor</th>
                         <th>Id</th>
                         <th>Caracteristica</th>
-                        <th>Nivel de importacia</th>
-                        <th>Ponderacion caracteristica</th>
                         <th>Grado de Cumplimiento</th>
-                        <th>Evaluacion teniendo en cuenta ponderacion</th>
                         <th>Logro ideal</th>
                         <th>Relacion con el logro ideal</th>
                         </thead>
@@ -246,22 +243,13 @@
                                         <a href="#detalleCaracteristica&${row[0]}" data="${row[1]}">${row[1]}</a> 
                                     </td>
                                     <td>   
-                                        <c:out value="${row[2]}"/>
-                                    </td>
-                                    <td>   
-                                        <c:out value="${row[3]}"/>
-                                    </td>
-                                    <td>   
                                         <c:out value="${row[4]}"/>
                                     </td>
                                     <td>   
-                                        <c:out value="${row[5]}"/>
+                                        <c:out value="5"/>
                                     </td>
                                     <td>   
-                                        <c:out value="${row[6]}"/>
-                                    </td>
-                                    <td>   
-                                        <c:out value="${row[7]}%"/>
+                                        <c:out value="${row[4]*20}%"/>
                                     </td>
                                 </tr>
                             </c:forEach>
